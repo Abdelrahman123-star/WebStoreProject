@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url('https://source.unsplash.com/1600x900/?technology,abstract') no-repeat center center/cover;
+}
+
+.container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    width: 350px;
+    padding: 30px;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+    font-weight: 600;
+    color: #0a0a01;
+    margin-bottom: 15px;
+}
+
+.input-group {
+    margin: 15px 0;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    background: rgba(194, 180, 180, 0.3);
+    color: #070202;
+}
+
+.input-group input::placeholder {
+    color: rgba(7, 1, 1, 0.7);
+}
+
+.forgot {
+    text-align: right;
+    font-size: 12px;
+}
+
+.forgot a {
+    color:darkblue;
+    text-decoration: none;
+}
+
+.btn {
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(45deg, #ff416c, #ff4b2b);
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: linear-gradient(45deg, #ff4b2b, #ff416c);
+}
+
+.toggle {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.toggle a {
+    color: #ff5722;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Hide Sign-Up Form */
+.hidden {
+    display: none;
+}
