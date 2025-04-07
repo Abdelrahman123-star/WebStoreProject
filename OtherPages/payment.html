@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment - MyStore</title>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Link to your CSS file -->
+  <link rel="stylesheet" href="../css/payment.css">
+</head>
+<body>
+  <!-- Payment Container -->
+  <div class="payment-container">
+    <h2>Payment Information</h2>
+
+    <!-- Compact Order Summary -->
+    <div class="order-summary">
+      <h3>Order Summary</h3>
+      <div class="product-list">
+        <!-- Item 1 -->
+        <div class="product-item">
+          <div class="item-image">
+            <img src="../imgs/phone.jpg" alt="Item 1">
+          </div>
+          <div class="item-details">
+            <span class="product-name">Item 1</span>
+            <span class="product-price">100 LE</span>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="product-item">
+          <div class="item-image">
+            <img src="../imgs/hoodie.jpg" alt="Item 2">
+          </div>
+          <div class="item-details">
+            <span class="product-name">Item 2</span>
+            <span class="product-price">20,000 LE</span>
+          </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="product-item">
+          <div class="item-image">
+            <img src="../imgs/kitchen.jpg" alt="Item 3">
+          </div>
+          <div class="item-details">
+            <span class="product-name">Item 3</span>
+            <span class="product-price">300 LE</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Totals -->
+      <div class="order-totals">
+        <div class="total-item">
+          <span>Subtotal</span>
+          <span>20,400 LE</span>
+        </div>
+        <div class="total-item">
+          <span>Shipping</span>
+          <span>50 LE</span>
+        </div>
+        <div class="total-item">
+          <span>Tax (VAT)</span>
+          <span>408 LE</span>
+        </div>
+        <div class="total-item grand-total">
+          <span>Total</span>
+          <span>20,858 LE</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment Options -->
+    <div class="payment-options">
+      <div class="payment-option active" id="visaOption">
+        <i class="fab fa-cc-visa"></i>
+        <span>Visa</span>
+      </div>
+      <div class="payment-option" id="cashOption">
+        <i class="fas fa-money-bill-wave"></i>
+        <span>Cash</span>
+      </div>
+    </div>
+
+    <!-- Visa Payment Form -->
+    <div class="payment-form" id="visaForm">
+      <form>
+        <div class="form-group">
+          <label for="cardName">Cardholder Name</label>
+          <input type="text" id="cardName" placeholder="Jana Essam" required>
+        </div>
+        <div class="form-group">
+          <label for="cardNumber">Card Number</label>
+          <input type="text" id="cardNumber" placeholder="0000 0000 0000 0000" required>
+        </div>
+        <div class="form-group">
+          <label for="expiryDate">Expiry Date</label>
+          <input type="text" id="expiryDate" placeholder="MM/YY" required>
+        </div>
+        <button type="submit">Pay Now</button>
+      </form>
+    </div>
+
+    <!-- Cash Payment Form -->
+    <div class="payment-form hidden" id="cashForm">
+      <p>Please prepare the exact amount for your purchase. Our staff will assist you with the payment upon delivery.</p>
+      <button type="button" onclick="confirmCashPayment()">Confirm Cash Payment</button>
+    </div>
+  </div>
+
+  <!-- Link to your JavaScript file -->
+  <script src="../js/payment.js"></script>
+</body>
+</html>

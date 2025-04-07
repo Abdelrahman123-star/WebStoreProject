@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop by Category - MyStore</title>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Link to your CSS file -->
+  <link rel="stylesheet" href="../css/category.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+      <a href="../homePage.html"><div class="logo">MyStore</div></a>
+    <div class="search-bar">
+      <input type="text" placeholder="Search for products...">
+      <button><i class="fas fa-search"></i></button>
+    </div>
+
+    <nav>
+      <ul>
+        <li><a href="../homePage.html">Home</a></li>
+        <li><a href="#">Contact</a></li>
+          <li><a href="aboutUSpage.html">About Us</a></li>
+        
+      </ul>
+    </nav>
+
+    <div class="user-actions">
+      <a href="login.html"> <button class="login-btn">Login</button></a>
+      <a href="signup.html"> <button class="signup-btn">Sign Up</button></a>
+      <div class="cart" onclick="window.location.href='cart.html'">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count">2</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Category Grid -->
+  <section class="category-grid">
+    <h2>Shop by Category</h2>
+    <div class="grid-container">
+      <div class="category-card" onclick="window.location.href='product.html'">
+        <div class="image-wrapper">
+          <img src="../imgs/phone.jpg" alt="Electronics">
+          <div class="overlay">
+            <h3>Electronics</h3>
+            <p>Explore the latest gadgets</p>
+          </div>
+        </div>
+      </div>
+      <div class="category-card" onclick="window.location.href='product.html'">
+        <div class="image-wrapper">
+          <img src="../imgs/hoodie.jpg" alt="Fashion">
+          <div class="overlay">
+            <h3>Fashion</h3>
+            <p>Discover trendy styles</p>
+          </div>
+        </div>
+      </div>
+      <div class="category-card" onclick="window.location.href='product.html'">
+        <div class="image-wrapper">
+          <img src="../imgs/kitchen.jpg" alt="Home & Kitchen">
+          <div class="overlay">
+            <h3>Home & Kitchen</h3>
+            <p>Upgrade your living space</p>
+          </div>
+        </div>
+      </div>
+      <div class="category-card" onclick="window.location.href='product.html'">
+        <div class="image-wrapper">
+          <img src="../imgs/1.jpg" alt="Beauty">
+          <div class="overlay">
+            <h3>Beauty</h3>
+            <p>Pamper yourself</p>
+          </div>
+        </div>
+      </div>
+      <div class="category-card" onclick="window.location.href='product.html'">
+        <div class="image-wrapper">
+          <img src="../imgs/1.jpg" alt="Sports">
+          <div class="overlay">
+            <h3>Sports</h3>
+            <p>Gear up for action</p>
+          </div>
+        </div>
+      </div>
+      <div class="category-card" onclick="window.location.href='product.html'">
+        <div class="image-wrapper">
+          <img src="../imgs/1.jpg" alt="Books">
+          <div class="overlay">
+            <h3>Books</h3>
+            <p>Expand your knowledge</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-links">
+      <a href="#">About Us</a>
+      <a href="#">Contact</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms & Conditions</a>
+    </div>
+    <div class="social-media">
+      <a href="#"><i class="fab fa-facebook"></i></a>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+    </div>
+    <div class="newsletter">
+      <h3 style="margin-bottom:30px;">Subscribe to our newsletter</h3>
+      <input type="email" placeholder="Enter your email">
+      <button>Subscribe</button>
+    </div>
+  </footer>
+
+  <!-- Link to your JavaScript file -->
+  <script src="js/category.js"></script>
+</body>
+</html>

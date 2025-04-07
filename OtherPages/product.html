@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <!-- dah btaa3 el icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+      <!-- w dah btaa3 el fonts-->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - MyStore</title>
+    <link rel="stylesheet" href="../css/productsAndCart.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+      <a href="../homePage.html"><div class="logo">MyStore</div></a>
+      <div class="search-bar">
+        <input type="text" placeholder="Search for products...">
+        <button><i class="fas fa-search"></i></button>
+      </div>
+
+      <nav>
+        <ul>
+          <li><a href="../homePage.html">Home</a></li>
+          <li><a href="#">Categories</a></li>
+          <li><a href="product.html">Products</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="aboutUSpage.html">About Us</a></li>
+          
+          
+        </ul>
+      </nav>
+      
+      <div class="user-actions">
+        <a href="login.html"> <button class="login-btn">Login</button></a>
+        <a href="signup.html"> <button class="signup-btn">Sign Up</button></a>
+        <div class="cart" onclick="window.location.href='cart.html'">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count">2</span>
+        </div>
+      </div>
+    </header>
+
+
+    <main class="products-container">
+        <h2>Category</h2>
+        <section class="product-list">
+            <div class="product-card" onclick="window.location.href='product-sneakers.html'">
+                <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=120&q=80" alt="Premium Sneakers">
+                <h3>Premium Sneakers</h3>
+                <p>EGP 2,200</p>
+            </div>
+            <div class="product-card" onclick="window.location.href='product-iphone.html'">
+                <img src="https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-4.0.3&auto=format&fit=crop&w=120&q=80" alt="iPhone 14 Pro">
+                <h3>iPhone 14 Pro</h3>
+                <p>EGP 35,000</p>
+            </div>
+            <div class="product-card" onclick="window.location.href='product-speaker.html'">
+                <img src="='../../../imgs/smart_speaker.jpg" alt="Smart Speaker" style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px;">
+                <h3>Smart Speaker</h3>
+                <p>EGP 3,500</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/product_cart.js"></script>
+</body>
+</html>
