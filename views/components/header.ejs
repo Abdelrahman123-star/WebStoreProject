@@ -1,0 +1,47 @@
+
+<head>
+      
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+      
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+      <link rel="stylesheet" href="/css/Header_Footer.css"> 
+      
+    </head>
+
+
+      <header>
+        <a href="/"><div class="logo">MyStore</div></a>
+        <div class="search-bar">
+          <input type="text" placeholder="Search for products...">
+          <button><i class="fas fa-search"></i></button>
+        </div>
+
+        <nav>
+          <ul class="header_list">
+            <li><a href="/Category">Categories</a></li>
+            <li><a href="/contact">Contact Us</a></li>
+            <li><a href="/about">About Us</a></li>
+             <% if ((session.user) && session.user.role ==='admin') { %>
+            <li><a href="/admin/DashBoard">Admin DashBoard</a></li>
+              <% } %>
+          </ul>
+        </nav>
+        <div class="user-actions">
+          <% if (session.user) { %>
+            <p>Welcome, <%= session.user.username %>!</p>
+            <a href="/logout"> <button class="login-btn">Logout</button></a>
+          <div class="cart" onclick="window.location.href='/cart'">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-count">2</span>
+          </div>
+          <% } else { %>
+          <a href="/login"> <button class="login-btn">Login</button></a>
+          <a href="/signup"> <button class="signup-btn">Sign Up</button></a>
+          <% } %>
+        
+
+          
+
+        </div>
+      </header>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <!-- dah btaa3 el icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <!-- w dah btaa3 el fonts-->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="../css/productsAndCart.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+
+        <!-- Header -->
+          <%- include('../components/header') %>
+
+
+    <main class="cart-container">
+        <h2>Your Cart</h2>
+        <section class="cart-items">
+            <div class="cart-item">
+                <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=120&q=80" alt="Premium Sneakers">
+                <div class="item-details">
+                    <h3>Premium Sneakers</h3>
+                    <p>EGP 2,200</p>
+                    <div class="quantity">
+                        <button onclick="updateQuantity(this, -1)">-</button>
+                        <input type="number" value="1" min="1">
+                        <button onclick="updateQuantity(this, 1)">+</button>
+                    </div>
+                    <button class="remove-btn" onclick="removeItem(this)">Remove</button>
+                </div>
+            </div>
+            <div class="cart-item">
+                <img src="https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-4.0.3&auto=format&fit=crop&w=120&q=80" alt="iPhone 14 Pro">
+                <div class="item-details">
+                    <h3>iPhone 14 Pro</h3>
+                    <p>EGP 35,000</p>
+                    <div class="quantity">
+                        <button onclick="updateQuantity(this, -1)">-</button>
+                        <input type="number" value="1" min="1">
+                        <button onclick="updateQuantity(this, 1)">+</button>
+                    </div>
+                    <button class="remove-btn" onclick="removeItem(this)">Remove</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="order-summary">
+            <h3>Order Summary</h3>
+            <p>Subtotal: <span id="subtotal">EGP 37,200</span></p>
+            <p>Shipping: <span id="shipping">EGP 100</span></p>
+            <p>Total: <span id="total">EGP 37,300</span></p>
+            <button class="checkout-btn" onclick="window.location.href='payment.html'">Proceed to Checkout</button>
+            <button class="continue-btn" onclick="window.location.href='product.html'">Continue Shopping</button>
+        </section>
+    </main>
+
+
+      <%- include('../components/footer') %>
+
+    <script src="../js/product_cart.js"></script>
+</body>
+</html>

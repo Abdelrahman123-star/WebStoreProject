@@ -1,0 +1,81 @@
+      <%- include('adminComponents/head') %>
+
+         <%- include('adminComponents/header') %>
+
+      <%- include('adminComponents/slidebar') %>
+<!-- Settings -->
+    <main class="admin-main">
+
+      <section id="settings" class="settings-management">
+          <h2>Store Settings</h2>
+        
+          <form class="settings-form">
+          <!-- Store Info -->
+          <fieldset>
+            <legend>Store Information</legend>
+            <label>
+              Store Name:
+              <input type="text" name="storeName" value="My Store" readonly>
+            </label>
+            <label>
+              Email:
+              <input type="email" name="email" value="Mystore@hotmail.com" readonly>
+            </label>
+            <label>
+              Phone:
+              <input type="tel" name="phone" value="+20111225588" readonly>
+            </label>
+            <button type="button" class="edit-info"><i class="fas fa-edit"></i> Edit</button>
+          </fieldset>
+        
+            <!-- Payment Settings -->
+            <fieldset>
+              <legend>Payment Options</legend>
+              <label>
+                <input type="checkbox" name="paypal" checked>
+                Enable PayPal
+              </label>
+              <label>
+                <input type="checkbox" name="creditCard">
+                Enable Credit Card
+              </label>
+              <label>
+                <input type="checkbox" name="cashOnDelivery">
+                Enable Cash on Delivery
+              </label>
+            </fieldset>
+        
+            <!-- Shipping Settings -->
+            <fieldset>
+              <legend>Shipping</legend>
+              <label>
+                Default Shipping Cost:
+                <input type="number" name="shippingCost" placeholder="50" min="0">
+              </label>
+              <label>
+                Free Shipping Over:
+                <input type="number" name="freeShipping" placeholder="500" min="0">
+              </label>
+            </fieldset>
+        
+            <!-- Theme -->
+            <fieldset>
+              <legend>Theme Preferences</legend>
+              <label>
+                <input type="radio" name="theme" value="light" checked>
+                Light Mode
+              </label>
+              <label>
+                <input type="radio" name="theme" value="dark">
+                Dark Mode
+              </label>
+            </fieldset>
+        
+            <!-- Save Button -->
+            <button type="submit" class="save-settings">
+              <i class="fas fa-save"></i> Save Settings
+            </button>
+          </form>
+       
+              </section>
+              </main>

@@ -1,0 +1,91 @@
+
+
+  .modal-wrapper {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    place-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-in-out forwards;
+  }
+
+  .modal-box {
+    background-color: #fff;
+    color: var(--secondary-color);
+    padding: 24px 30px;
+    border-radius: 16px;
+    width: 400px;
+    max-width: 95%;
+    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.2);
+    animation: scaleUp 0.3s ease-in-out;
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .modal-header h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: bold;
+  }
+
+  .modal-close {
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--secondary-color);
+  }
+
+  .modal-body label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  .modal-body input,
+  .modal-body select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 18px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    color:black;
+  }
+
+  .modal-save {
+    background-color: #ff5722;
+    width: 100%;
+    padding: 12px;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .modal-save:hover {
+    background-color: #e64a19; /* You can adjust hover effect if needed */
+  }
+
+  @keyframes scaleUp {
+    0% {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }

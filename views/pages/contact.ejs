@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="../css/contactUs.css">
+</head>
+<body>
+     <!-- dah btaa3 el icons -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+      <!-- w dah btaa3 el fonts-->
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" >
+    <!-- Header -->
+            <%- include('../components/header') %>
+
+
+
+    <div class="container">
+        <div class="contact-form">
+            <h2>Contact Us</h2>
+            <form id="contactForm">
+                <input class="inputbox" type="text" id="name" placeholder="Your Name" required>
+                <input class="inputbox" type="email" id="email" placeholder="Your Email" required>
+                <input class="inputbox" type="text" id="subject" placeholder="Subject" required>
+                <textarea class="textareabox" id="message" placeholder="Your Message" required></textarea>
+                <button class="button" type="submit">Send Message</button>
+            </form>
+        </div>
+        <div class="contact-info">
+            <h2>Get in Touch</h2>
+            <div class="info-item">📞 +1 234 567 890</div>
+            <div class="info-item">✉️ contact@company.com</div>
+            <div class="info-item">📍 123 Creative Ave, City, Country</div>
+        </div>
+    </div>
+
+
+
+              <!-- Footer -->
+                    <%- include('../components/footer') %>
+
+
+
+
+    <script src="../js/contactUs.js"></script>
+</body>
+</html>
+
+

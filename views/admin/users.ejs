@@ -1,0 +1,127 @@
+      <%- include('adminComponents/head') %>
+  <link rel="stylesheet" href="../css/userModalWindowCss.css">
+
+         <%- include('adminComponents/header') %>
+
+      <%- include('adminComponents/slidebar') %>
+<!-- User Management -->
+
+
+    <main class="admin-main">
+
+      <section id="users" class="user-management">
+        <h2>User Management</h2>
+        <div class="actions">
+          <button class="add-product">
+            <i class="fas fa-plus"></i>
+            Add User
+          </button>
+        </div>
+        
+<% if (success && success.length > 0) { %>
+  <div class="flash flash-success"><%= success %></div>
+<% } %>
+
+<% if (error && error.length > 0) { %>
+  <div class="flash flash-error"><%= error %></div>
+<% } %>
+
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% users.forEach(user => { %>
+              <tr>
+                <td><%= user._id %></td>
+                <td><%= user.username %></td>
+                <td><%= user.email %></td>
+                <td><%= user.role %></td>
+                <td>
+                  <button
+                    class="edit"
+                    data-id="<%= user._id %>"
+                    data-username="<%= user.username %>"
+                    data-email="<%= user.email %>"
+                    data-role="<%= user.role %>">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <form action="/admin/users/delete" method="POST" style="display:inline;">
+  <input type="hidden" name="id" value="<%= user._id %>">
+  <button type="submit" class="delete">
+    <i class="fas fa-trash"></i>
+  </button>
+</form>
+
+
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+
+        </table>
+      </section>
+
+      </main>
+
+
+
+<!-- Modern Edit User Modal -->
+<div id="editUserModal" class="modal-wrapper">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>Edit User</h2>
+      <span class="modal-close" id="closeModal">&times;</span>
+    </div>
+    <form id="editUserForm" class="modal-body" method="POST">
+      <input type="hidden" id="editUserId" name="id">
+
+      <label for="editUsername">Name</label>
+      <input type="text" id="editUsername" name="username" required>
+
+      <label for="editEmail">Email</label>
+      <input type="email" id="editEmail" name="email" required>
+
+      <label for="editRole">Role</label>
+      <select id="editRole" name="role">
+        <option value="admin">Admin</option>
+        <option value="customer">Customer</option>
+      </select>
+
+      <button type="submit" class="modal-save">Save</button>
+    </form>
+  </div>
+
+</div>
+
+
+<script>
+  // Basic modal open/close logic:
+  document.querySelectorAll('.edit').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const modal = document.getElementById('editUserModal');
+      document.getElementById('editUserId').value = btn.dataset.id;
+      document.getElementById('editUsername').value = btn.dataset.username;
+      document.getElementById('editEmail').value = btn.dataset.email;
+      document.getElementById('editRole').value = btn.dataset.role;
+      modal.style.display = 'grid';
+    });
+  });
+
+  document.getElementById('closeModal').onclick = () => {
+    document.getElementById('editUserModal').style.display = 'none';
+  };
+
+  window.onclick = (e) => {
+    const modal = document.getElementById('editUserModal');
+    if(e.target === modal) {
+      modal.style.display = 'none';
+    }
+  };
+</script>

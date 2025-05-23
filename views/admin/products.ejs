@@ -1,0 +1,56 @@
+
+<!-- Products Management -->
+      <%- include('adminComponents/head') %>
+
+         <%- include('adminComponents/header') %>
+
+      <%- include('adminComponents/slidebar') %>
+
+      <section id="products" class="products-management" style="display:block;">
+    <main class="admin-main">
+
+        <h2>Products Management</h2>
+        <div class="actions">
+          <button class="add-product">
+            <i class="fas fa-plus"></i>
+            Add Product
+          </button>
+        </div>
+        <table class="products-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td><img src="imgs/phone.jpg" alt="Product 1"></td>
+              <td>Product 1</td>
+              <td>100 LE</td>
+              <td>50</td>
+              <td>
+                <button class="edit"><i class="fas fa-edit"></i></button>
+                <button class="delete"><i class="fas fa-trash"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td><img src="imgs/hoodie.jpg" alt="Product 2"></td>
+              <td>Product 2</td>
+              <td>200 LE</td>
+              <td>30</td>
+              <td>
+                <button class="edit"><i class="fas fa-edit"></i></button>
+                <button class="delete"><i class="fas fa-trash"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>  
+      </main>
