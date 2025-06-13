@@ -1,56 +1,435 @@
-
 <!-- Products Management -->
-      <%- include('adminComponents/head') %>
+<%- include('adminComponents/head') %>
+<%- include('adminComponents/header') %>
+<%- include('adminComponents/slidebar') %>
 
-         <%- include('adminComponents/header') %>
+<section id="products" class="products-management">
+  <main class="admin-main">
+    <% let successMsg = null, errorMsg = null;
+      if (messages && messages.success && messages.success.length > 0) successMsg = messages.success[0];
+      if (success && success.length > 0) successMsg = success[0] || success;
+      if (messages && messages.error && messages.error.length > 0) errorMsg = messages.error[0];
+      if (error && error.length > 0) errorMsg = error[0] || error;
+    %>
+    <% if (successMsg) { %>
+      <div class="alert alert-success" id="flash-success"><%= successMsg %></div>
+    <% } %>
+    <% if (errorMsg) { %>
+      <div class="alert alert-danger" id="flash-error"><%= errorMsg %></div>
+    <% } %>
+    <script>
+      setTimeout(function() {
+        var success = document.getElementById('flash-success');
+        if (success) success.style.display = 'none';
+        var error = document.getElementById('flash-error');
+        if (error) error.style.display = 'none';
+      }, 3000);
+    </script>
+    
+    <div class="products-header">
+      <h2>Products Management</h2>
+      <button class="add-product">
+        <i class="fas fa-plus"></i>
+        Add Product
+      </button>
+    </div>
 
-      <%- include('adminComponents/slidebar') %>
+    <style>
+      .products-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #f0f0f0;
+      }
 
-      <section id="products" class="products-management" style="display:block;">
-    <main class="admin-main">
+      .products-header h2 {
+        font-size: 1.8rem;
+        color: #2d3436;
+        margin: 0;
+      }
 
-        <h2>Products Management</h2>
-        <div class="actions">
-          <button class="add-product">
-            <i class="fas fa-plus"></i>
-            Add Product
-          </button>
+      .add-product {
+        background: #ff5722;
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .add-product:hover {
+        background: #e64a19;
+        transform: translateY(-2px);
+      }
+
+      .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .product-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .product-image {
+        height: 200px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+
+      .product-card:hover .product-image img {
+        transform: scale(1.05);
+      }
+
+      .product-badge {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        background: #ff5722;
+        color: white;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+      }
+
+      .product-info {
+        padding: 1.5rem;
+      }
+
+      .product-name {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #2d3436;
+        margin-bottom: 0.5rem;
+      }
+
+      .product-category {
+        color: #636e72;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+      }
+
+      .product-details {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .detail-item {
+        background: #f8f9fa;
+        padding: 0.8rem;
+        border-radius: 8px;
+        text-align: center;
+      }
+
+      .detail-label {
+        font-size: 0.8rem;
+        color: #636e72;
+        margin-bottom: 0.3rem;
+      }
+
+      .detail-value {
+        font-weight: 600;
+        color: #2d3436;
+      }
+
+      .product-actions {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+
+      .action-button {
+        flex: 1;
+        padding: 0.8rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .edit-button {
+        background: #00b894;
+        color: white;
+      }
+
+      .edit-button:hover {
+        background: #00a884;
+      }
+
+      .delete-button {
+        background: #ff7675;
+        color: white;
+      }
+
+      .delete-button:hover {
+        background: #e66767;
+      }
+
+      .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+      }
+
+      .pagination-list {
+        display: flex;
+        gap: 0.5rem;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .pagination-item {
+        margin: 0;
+      }
+
+      .pagination-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        background: white;
+        color: #2d3436;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border: 1px solid #f0f0f0;
+      }
+
+      .pagination-item.active .pagination-link {
+        background: #ff5722;
+        color: white;
+        border-color: #ff5722;
+      }
+
+      .pagination-item:not(.disabled) .pagination-link:hover {
+        background: #f8f9fa;
+        transform: translateY(-2px);
+      }
+
+      .pagination-item.disabled .pagination-link {
+        color: #b2bec3;
+        cursor: not-allowed;
+      }
+
+      @media (max-width: 768px) {
+        .products-grid {
+          grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        }
+
+        .products-header {
+          flex-direction: column;
+          gap: 1rem;
+          align-items: flex-start;
+        }
+      }
+    </style>
+    
+    <div class="products-grid">
+      <% products.forEach(product => { %>
+        <div class="product-card">
+          <div class="product-image">
+            <% if (product.imageUrl || product.imagePath) { %>
+              <img src="<%= product.imageUrl || product.imagePath %>" alt="<%= product.name %>">
+            <% } else { %>
+              <img src="/imgs/img-notfound.jpg" alt="No Image">
+            <% } %>
+            <span class="product-badge">
+              <%= product.stock > 0 ? 'In Stock' : 'Out of Stock' %>
+            </span>
+          </div>
+          <div class="product-info">
+            <h3 class="product-name"><%= product.name %></h3>
+            <div class="product-category">
+              <% if (product.category && product.category.name) { %>
+                <%= product.category.name %>
+              <% } else { %>
+                <span style="color: #999;">Uncategorized</span>
+              <% } %>
+            </div>
+            <div class="product-details">
+              <div class="detail-item">
+                <div class="detail-label">Price</div>
+                <div class="detail-value"><%= product.price %> LE</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">Stock</div>
+                <div class="detail-value"><%= product.stock %></div>
+              </div>
+            </div>
+            <div class="product-actions">
+              <button class="action-button edit-button edit" data-id="<%= product._id %>">
+                <i class="fas fa-edit"></i>
+                Edit
+              </button>
+              <button class="action-button delete-button delete" data-id="<%= product._id %>" data-name="<%= product.name %>">
+                <i class="fas fa-trash"></i>
+                Delete
+              </button>
+            </div>
+          </div>
         </div>
-        <table class="products-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Image</th>
-              <th>Name</th>
-              <th>Price</th>
-              <th>Stock</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td><img src="imgs/phone.jpg" alt="Product 1"></td>
-              <td>Product 1</td>
-              <td>100 LE</td>
-              <td>50</td>
-              <td>
-                <button class="edit"><i class="fas fa-edit"></i></button>
-                <button class="delete"><i class="fas fa-trash"></i></button>
-              </td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td><img src="imgs/hoodie.jpg" alt="Product 2"></td>
-              <td>Product 2</td>
-              <td>200 LE</td>
-              <td>30</td>
-              <td>
-                <button class="edit"><i class="fas fa-edit"></i></button>
-                <button class="delete"><i class="fas fa-trash"></i></button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </section>  
-      </main>
+      <% }) %>
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="pagination">
+      <% if (totalPages > 1) { %>
+        <ul class="pagination-list">
+          <li class="pagination-item <%= currentPage === 1 ? 'disabled' : '' %>">
+            <% if (currentPage === 1) { %>
+              <span class="pagination-link">&laquo;</span>
+            <% } else { %>
+              <a class="pagination-link" href="?page=<%= currentPage - 1 %>">&laquo;</a>
+            <% } %>
+          </li>
+          <% for (let i = 1; i <= totalPages; i++) { %>
+            <li class="pagination-item <%= i === currentPage ? 'active' : '' %>">
+              <% if (i === currentPage) { %>
+                <span class="pagination-link"><%= i %></span>
+              <% } else { %>
+                <a class="pagination-link" href="?page=<%= i %>"><%= i %></a>
+              <% } %>
+            </li>
+          <% } %>
+          <li class="pagination-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+            <% if (currentPage === totalPages) { %>
+              <span class="pagination-link">&raquo;</span>
+            <% } else { %>
+              <a class="pagination-link" href="?page=<%= currentPage + 1 %>">&raquo;</a>
+            <% } %>
+          </li>
+        </ul>
+      <% } %>
+    </div>
+  </main>
+</section>
+
+<!-- Product Creation/Edit Modal -->
+<div id="productModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <h2 id="modalTitle">Add New Product</h2>
+    
+    <form id="productForm" method="POST" action="/admin/products/create" enctype="multipart/form-data">
+      <div class="form-grid">
+        <!-- Left Column -->
+        <div class="form-column">
+          <!-- Product Image Upload -->
+          <div class="form-group image-upload">
+            <label for="productImage">Product Image</label>
+            <div class="image-preview" id="imagePreview">
+              <img src="" alt="Image Preview" class="image-preview__image">
+              <span class="image-preview__default-text">Image will appear here</span>
+            </div>
+            <div class="upload-options">
+              <input type="file" id="productImage" name="productImage" accept="image/*" style="display: none;">
+              <button type="button" class="upload-btn" id="uploadBtn">Upload Image</button>
+              <span class="or-text">OR</span>
+              <input type="text" id="imageUrl" name="imageUrl" placeholder="Paste image URL">
+            </div>
+          </div>
+        </div>
+        
+        <!-- Right Column -->
+        <div class="form-column">
+          <!-- Product Details -->
+          <div class="form-group">
+            <label for="productName">Product Name*</label>
+            <input type="text" id="productName" name="productName" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="productPrice">Price (LE)*</label>
+            <input type="number" id="productPrice" name="productPrice" min="0" step="0.01" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="productStock">Stock Quantity*</label>
+            <input type="number" id="productStock" name="productStock" min="0" required>
+          </div>
+          <!-- category -->
+          <div class="form-group">
+            <label for="productCategory">Category*</label>
+            <select id="productCategory" name="productCategory" required>
+              <option value="">Select a category</option>
+              <% if (categories && categories.length > 0) { %>
+                <% categories.forEach(category => { %>
+                  <option value="<%= category._id %>" data-name="<%= category.name %>"><%= category.name %></option>
+                <% }) %>
+              <% } %>
+            </select>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Full Width Fields -->
+      <div class="form-group full-width">
+        <label for="productDescription">Description*</label>
+        <textarea id="productDescription" name="productDescription" rows="4" required></textarea>
+      </div>
+      
+      <div class="form-actions">
+        <button type="button" class="cancel-btn">Cancel</button>
+        <button type="submit" id="submitBtn" class="submit-btn">Add Product</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="modal">
+  <div class="modal-content delete-modal">
+    <div class="delete-icon">
+      <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    <h2>Delete Product</h2>
+    <p>Are you sure you want to delete "<span id="deleteProductName"></span>"?</p>
+    <p class="delete-warning">This action cannot be undone.</p>
+    <div class="delete-actions">
+      <button id="cancelDelete" class="cancel-btn">Cancel</button>
+      <button id="confirmDelete" class="delete-btn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script src="/js/adminProducts.js"></script>
+
+<link rel="stylesheet" href="/css/home.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">

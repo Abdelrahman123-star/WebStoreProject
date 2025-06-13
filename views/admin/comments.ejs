@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comments Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+    <%- include('adminComponents/head') %>
+    <%- include('adminComponents/header') %>
+    <%- include('adminComponents/slidebar') %>
+
+    <main class="admin-main">
+        <section id="comments" class="comment-management">
+            <div class="products-header">
+                <h2>Comments Management</h2>
+                <div class="header-actions">
+                    <div class="search-container">
+                        <input type="text" id="searchInput" placeholder="Search comments...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flash-messages">
+                <% if (messages && messages.success && messages.success.length > 0) { %>
+                    <div class="alert alert-success">
+                        <%= messages.success[0] %>
+                    </div>
+                <% } %>
+                <% if (messages && messages.error && messages.error.length > 0) { %>
+                    <div class="alert alert-danger">
+                        <%= messages.error[0] %>
+                    </div>
+                <% } %>
+            </div>
+
+            <div class="comments-grid">
+                <% if (comments && comments.length > 0) { %>
+                    <% comments.forEach(comment => { %>
+                        <div class="comment-card" data-comment-id="<%= comment._id %>">
+                            <div class="comment-header">
+                                <div class="user-info">
+                                    <i class="fas fa-user-circle"></i>
+                                    <span class="username"><%= comment.user.username %></span>
+                                </div>
+                                <div class="product-info">
+                                    <i class="fas fa-box"></i>
+                                    <span class="product-name"><%= comment.product.name %></span>
+                                </div>
+                            </div>
+                            <div class="comment-content">
+                                <div class="rating">
+                                    <% for(let i = 1; i <= 5; i++) { %>
+                                        <i class="fas fa-star <%= i <= comment.rating ? 'active' : '' %>"></i>
+                                    <% } %>
+                                </div>
+                                <p><%= comment.content %></p>
+                            </div>
+                            <div class="comment-footer">
+                                <span class="comment-date"><%= new Date(comment.createdAt).toLocaleDateString() %></span>
+                                <span class="comment-status <%= comment.status %>">
+                                    <%= comment.status.charAt(0).toUpperCase() + comment.status.slice(1) %>
+                                </span>
+                            </div>
+                            <div class="comment-actions">
+                                <% if (comment.status === 'pending') { %>
+                                    <button class="btn-approve" onclick="updateCommentStatus('<%= comment._id %>', 'approved')">
+                                        <i class="fas fa-check"></i> Approve
+                                    </button>
+                                    <button class="btn-reject" onclick="updateCommentStatus('<%= comment._id %>', 'rejected')">
+                                        <i class="fas fa-times"></i> Reject
+                                    </button>
+                                <% } %>
+                                <button class="btn-delete" onclick="deleteComment('<%= comment._id %>')">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <div class="no-data">No comments found</div>
+                <% } %>
+            </div>
+
+            <% if (totalPages > 1) { %>
+                <div class="pagination">
+                    <% if (currentPage > 1) { %>
+                        <a href="?page=<%= currentPage - 1 %>" class="page-link">
+                            <i class="fas fa-chevron-left"></i> Previous
+                        </a>
+                    <% } %>
+                    
+                    <% for(let i = 1; i <= totalPages; i++) { %>
+                        <a href="?page=<%= i %>" class="page-link <%= i === currentPage ? 'active' : '' %>">
+                            <%= i %>
+                        </a>
+                    <% } %>
+
+                    <% if (currentPage < totalPages) { %>
+                        <a href="?page=<%= currentPage + 1 %>" class="page-link">
+                            Next <i class="fas fa-chevron-right"></i>
+                        </a>
+                    <% } %>
+                </div>
+            <% } %>
+        </section>
+    </main>
+
+    <script>
+        setTimeout(function() {
+            var success = document.getElementById('flash-success');
+            if (success) success.style.display = 'none';
+            var error = document.getElementById('flash-error');
+            if (error) error.style.display = 'none';
+        }, 3000);
+
+        async function updateCommentStatus(commentId, status) {
+            try {
+                console.log('Updating comment:', { commentId, status }); // Debug log
+                
+                const response = await fetch(`/api/comments/${commentId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    alert(data.error || 'Failed to update comment status');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while updating comment status');
+            }
+        }
+
+        async function deleteComment(commentId) {
+            if (!confirm('Are you sure you want to delete this comment?')) {
+                return;
+            }
+
+            try {
+                console.log('Deleting comment:', commentId); // Debug log
+                
+                const response = await fetch(`/api/comments/${commentId}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    const data = await response.json();
+                    alert(data.error || 'Failed to delete comment');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while deleting the comment');
+            }
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const commentCards = document.querySelectorAll('.comment-card');
+            
+            commentCards.forEach(card => {
+                const username = card.querySelector('.username').textContent.toLowerCase();
+                const productName = card.querySelector('.product-name').textContent.toLowerCase();
+                const content = card.querySelector('.comment-content p').textContent.toLowerCase();
+                
+                if (username.includes(searchTerm) || 
+                    productName.includes(searchTerm) || 
+                    content.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+    <style>
+        .products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .products-header h2 {
+            font-size: 1.8rem;
+            color: #2d3436;
+            margin: 0;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-container input {
+            padding: 0.8rem 1rem;
+            padding-right: 2.5rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 300px;
+        }
+
+        .search-container i {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        .comments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .comment-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .comment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .user-info, .product-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-info i, .product-info i {
+            color: #666;
+            font-size: 1.2rem;
+        }
+
+        .username, .product-name {
+            font-weight: 500;
+            color: #2d3436;
+        }
+
+        .comment-content {
+            margin-bottom: 1rem;
+        }
+
+        .rating {
+            color: #ffd700;
+            margin-bottom: 0.5rem;
+            display: flex;
+            gap: 0.2rem;
+        }
+
+        .rating i {
+            font-size: 1rem;
+        }
+
+        .rating i.active {
+            color: #ffd700;
+        }
+
+        .rating i:not(.active) {
+            color: #ddd;
+        }
+
+        .comment-content p {
+            color: #2d3436;
+            line-height: 1.6;
+        }
+
+        .comment-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .comment-status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .comment-status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .comment-status.approved {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .comment-status.rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .comment-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .comment-actions button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-approve {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-reject {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-approve:hover {
+            background: #218838;
+        }
+
+        .btn-reject:hover {
+            background: #c82333;
+        }
+
+        .btn-delete:hover {
+            background: #5a6268;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 20px;
+            color: #6c757d;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .page-link {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            color: #2d3436;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .page-link:hover {
+            background: #f8f9fa;
+        }
+
+        .page-link.active {
+            background: #00b894;
+            color: white;
+            border-color: #00b894;
+        }
+    </style>
+</body>
+</html> 

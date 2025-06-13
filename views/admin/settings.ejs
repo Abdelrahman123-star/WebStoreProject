@@ -9,68 +9,25 @@
       <section id="settings" class="settings-management">
           <h2>Store Settings</h2>
         
-          <form class="settings-form">
-          <!-- Store Info -->
-          <fieldset>
-            <legend>Store Information</legend>
-            <label>
-              Store Name:
-              <input type="text" name="storeName" value="My Store" readonly>
-            </label>
-            <label>
-              Email:
-              <input type="email" name="email" value="Mystore@hotmail.com" readonly>
-            </label>
-            <label>
-              Phone:
-              <input type="tel" name="phone" value="+20111225588" readonly>
-            </label>
-            <button type="button" class="edit-info"><i class="fas fa-edit"></i> Edit</button>
-          </fieldset>
-        
-            <!-- Payment Settings -->
-            <fieldset>
-              <legend>Payment Options</legend>
-              <label>
-                <input type="checkbox" name="paypal" checked>
-                Enable PayPal
-              </label>
-              <label>
-                <input type="checkbox" name="creditCard">
-                Enable Credit Card
-              </label>
-              <label>
-                <input type="checkbox" name="cashOnDelivery">
-                Enable Cash on Delivery
-              </label>
-            </fieldset>
-        
+          <!-- Dynamic Message Display -->
+          <div id="status-message" class="status-message hidden"></div>
+
+          <form class="settings-form" action="/admin/settings" method="POST">
+         
             <!-- Shipping Settings -->
             <fieldset>
               <legend>Shipping</legend>
               <label>
                 Default Shipping Cost:
-                <input type="number" name="shippingCost" placeholder="50" min="0">
+                <input type="number" name="defaultShippingCost" value="<%= settings.defaultShippingCost %>" min="0">
               </label>
               <label>
                 Free Shipping Over:
-                <input type="number" name="freeShipping" placeholder="500" min="0">
+                <input type="number" name="freeShippingThreshold" value="<%= settings.freeShippingThreshold %>" min="0">
               </label>
             </fieldset>
         
-            <!-- Theme -->
-            <fieldset>
-              <legend>Theme Preferences</legend>
-              <label>
-                <input type="radio" name="theme" value="light" checked>
-                Light Mode
-              </label>
-              <label>
-                <input type="radio" name="theme" value="dark">
-                Dark Mode
-              </label>
-            </fieldset>
-        
+            
             <!-- Save Button -->
             <button type="submit" class="save-settings">
               <i class="fas fa-save"></i> Save Settings
@@ -79,3 +36,88 @@
        
               </section>
               </main>
+
+<style>
+    /* Basic message styling */
+    .status-message {
+        padding: 12px 20px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        text-align: center;
+        transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .status-message.hidden {
+        opacity: 0;
+        transform: translateY(-10px);
+        height: 0; /* Collapse element height */
+        padding-top: 0;
+        padding-bottom: 0;
+        margin-top: 0;
+        margin-bottom: 0; 
+        border: none; /* Remove border when hidden */
+    }
+    .status-message.success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+    .status-message.error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const settingsForm = document.querySelector('.settings-form');
+        const statusMessageDiv = document.getElementById('status-message');
+
+        settingsForm.addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent default form submission and page reload
+
+            const formData = new FormData(settingsForm);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch(settingsForm.action, {
+                    method: settingsForm.method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    statusMessageDiv.textContent = result.message;
+                    statusMessageDiv.className = 'status-message success';
+                } else {
+                    statusMessageDiv.textContent = result.message || 'An unknown error occurred.';
+                    statusMessageDiv.className = 'status-message error';
+                }
+
+                // Show the message
+                statusMessageDiv.classList.remove('hidden');
+
+                // Hide the message after 4 seconds
+                setTimeout(() => {
+                    statusMessageDiv.classList.add('hidden');
+                }, 4000); // 4000 milliseconds = 4 seconds
+
+            } catch (error) {
+                console.error('Error saving settings:', error);
+                statusMessageDiv.textContent = 'Network error or server unreachable.';
+                statusMessageDiv.className = 'status-message error';
+                statusMessageDiv.classList.remove('hidden');
+                setTimeout(() => {
+                    statusMessageDiv.classList.add('hidden');
+                }, 4000);
+            }
+        });
+    });
+</script>
