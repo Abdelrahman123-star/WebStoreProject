@@ -10,76 +10,279 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <!-- Link to your CSS file -->
   <link rel="stylesheet" href="../css/category.css">
+  <style>
+    :root {
+      --primary-color: #2d3436;
+      --secondary-color: #ff5722;
+      --background-color: #f8f9fa;
+      --card-background: #ffffff;
+      --text-color: #2d3436;
+      --text-light: #636e72;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+
+    .category-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    .sort-select {
+      padding: 0.5rem 1rem;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      background: white;
+      cursor: pointer;
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+      padding: 1rem 0;
+    }
+
+    .category-card {
+      background: var(--card-background);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .category-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .category-image {
+      position: relative;
+      height: 250px;
+      overflow: hidden;
+    }
+
+    .category-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: var(--transition);
+    }
+
+    .category-card:hover img {
+      transform: scale(1.05);
+    }
+
+   
+
+    .badge-popular {
+      background: var(--secondary-color);
+      color: white;
+    }
+
+    .badge-new {
+      background: #00b894;
+      color: white;
+    }
+
+    .category-actions {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      opacity: 0;
+      transform: translateX(10px);
+      transition: var(--transition);
+    }
+
+    .category-card:hover .category-actions {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .action-button {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      background: white;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: var(--shadow);
+    }
+
+    .action-button:hover {
+      background: var(--secondary-color);
+      color: white;
+    }
+
+    .category-info {
+      padding: 1.5rem;
+    }
+
+    .category-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: var(--primary-color);
+    }
+
+    .category-stats {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid #eee;
+      font-size: 0.9rem;
+      color: var(--text-light);
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .stat-item i {
+      color: var(--secondary-color);
+    }
+
+    .category-description {
+      color: var(--text-light);
+      font-size: 0.9rem;
+      margin: 0.5rem 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .category-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      padding: 0.2rem 0.6rem;
+      background: #f1f2f6;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      color: var(--text-light);
+    }
+
+    .no-categories {
+      text-align: center;
+      padding: 4rem 2rem;
+      background: var(--card-background);
+      border-radius: 15px;
+      box-shadow: var(--shadow);
+    }
+
+    .no-categories i {
+      font-size: 4rem;
+      color: var(--secondary-color);
+      margin-bottom: 1.5rem;
+      opacity: 0.5;
+    }
+
+    .no-categories h3 {
+      color: var(--primary-color);
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .no-categories p {
+      color: var(--text-light);
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 768px) {
+      .category-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 1.5rem;
+      }
+
+     
+    }
+
+    @media (max-width: 480px) {
+      .category-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .category-container {
+        margin: 1rem auto;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- Header -->
-        <%- include('../components/header') %>
+  <%- include('../components/header') %>
+  <%- include('../components/backButton') %>
+
+  <main class="category-container">
 
 
-  <!-- Category Grid -->
-  <section class="category-grid">
-    <h2>Shop by Category</h2>
-    <div class="grid-container">
-      <div class="category-card" onclick="window.location.href='/product'">
-        <div class="image-wrapper">
-          <img src="../imgs/phone.jpg" alt="Electronics">
-          <div class="overlay">
-            <h3>Electronics</h3>
-            <p>Explore the latest gadgets</p>
+    <section class="category-grid">
+      <% if (categories && categories.length > 0) { %>
+        <% categories.forEach(category => { %>
+          <div class="category-card" onclick="window.location.href='/products/<%= category.slug %>'">
+            <div class="category-image">
+              <% if (category.imageUrl || category.imagePath) { %>
+                <img src="<%= category.imageUrl || category.imagePath %>" alt="<%= category.name %>">
+              <% } else { %>
+                <img src="../imgs/default-category.jpg" alt="<%= category.name %>">
+              <% } %>
+
+              <div class="category-actions">
+                <button class="action-button" title="Quick View">
+                  <i class="fas fa-eye"></i>
+                </button>
+
+              </div>
+            </div>
+            <div class="category-info">
+              <h3><%= category.name %></h3>
+              <p class="category-description"><%= category.description || 'Explore our products' %></p>
+
+              <div class="category-stats">
+                <div class="stat-item">
+                  <i class="fas fa-box"></i>
+                  <span><%= category.productCount || 0 %> Products</span>
+                </div>
+
+              </div>
+            </div>
           </div>
+        <% }) %>
+      <% } else { %>
+        <div class="no-categories">
+          <i class="fas fa-folder-open"></i>
+          <h3>No Categories Found</h3>
+          <p>There are no categories available at the moment.</p>
         </div>
-      </div>
-      <div class="category-card" onclick="window.location.href='product.html'">
-        <div class="image-wrapper">
-          <img src="../imgs/hoodie.jpg" alt="Fashion">
-          <div class="overlay">
-            <h3>Fashion</h3>
-            <p>Discover trendy styles</p>
-          </div>
-        </div>
-      </div>
-      <div class="category-card" onclick="window.location.href='product.html'">
-        <div class="image-wrapper">
-          <img src="../imgs/kitchen.jpg" alt="Home & Kitchen">
-          <div class="overlay">
-            <h3>Home & Kitchen</h3>
-            <p>Upgrade your living space</p>
-          </div>
-        </div>
-      </div>
-      <div class="category-card" onclick="window.location.href='product.html'">
-        <div class="image-wrapper">
-          <img src="../imgs/1.jpg" alt="Beauty">
-          <div class="overlay">
-            <h3>Phones</h3>
-            <p>Take a phone call</p>
-          </div>
-        </div>
-      </div>
-      <div class="category-card" onclick="window.location.href='product.html'">
-        <div class="image-wrapper">
-          <img src="../imgs/3.png" alt="Sports">
-          <div class="overlay">
-            <h3>Sports</h3>
-            <p>Gear up for action</p>
-          </div>
-        </div>
-      </div>
-      <div class="category-card" onclick="window.location.href='product.html'">
-        <div class="image-wrapper">
-          <img src="../imgs/smart_speaker.jpg" alt="Books">
-          <div class="overlay">
-            <h3>speakers</h3>
-            <p>Expand your music</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+      <% } %>
+    </section>
+  </main>
 
   <!-- Footer -->
-        <%- include('../components/footer') %>
-
+  <%- include('../components/footer') %>
 
   <!-- Link to your JavaScript file -->
   <script src="js/category.js"></script>
