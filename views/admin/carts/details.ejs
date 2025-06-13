@@ -1,0 +1,534 @@
+<%- include('../adminComponents/head') %>
+<%- include('../adminComponents/header') %>
+<%- include('../adminComponents/slideBar') %>
+
+<div class="main-content">
+    <div class="header">
+        <div class="header-content">
+            <a href="/admin/carts" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                Back to Carts
+            </a>
+            <h1>Cart Details</h1>
+        </div>
+    </div>
+
+    <div class="content">
+        <% if (cart) { %>
+            <div class="cart-detail-container">
+                <div class="detail-section cart-summary-card">
+                    <h2><i class="fas fa-info-circle"></i> Cart Overview</h2>
+                    <div class="info-row">
+                        <span class="label">Cart ID:</span>
+                        <span class="value"><%= cart._id %></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Created:</span>
+                        <span class="value"><%= new Date(cart.createdAt).toLocaleString() %></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Last Updated:</span>
+                        <span class="value"><%= new Date(cart.updatedAt).toLocaleString() %></span>
+                    </div>
+                    <div class="info-row total-row">
+                        <span class="label">Total Items:</span>
+                        <span class="value"><%= cart.totalItems %></span>
+                    </div>
+                    <div class="info-row total-row">
+                        <span class="label">Total Amount:</span>
+                        <span class="value total-amount">EGP <%= cart.totalAmount.toFixed(2) %></span>
+                    </div>
+                </div>
+
+                <div class="detail-section user-info-card">
+                    <h2><i class="fas fa-user"></i> User Information</h2>
+                    <% if (cart.user) { %>
+                        <div class="info-row">
+                            <span class="label">User ID:</span>
+                            <span class="value"><%= cart.user._id %></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Username:</span>
+                            <span class="value"><%= cart.user.username %></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Email:</span>
+                            <span class="value"><%= cart.user.email %></span>
+                        </div>
+                    <% } else { %>
+                        <div class="info-row">
+                            <span class="label">User:</span>
+                            <span class="value">Unknown User</span>
+                        </div>
+                    <% } %>
+                </div>
+
+                <div class="detail-section cart-items-card">
+                    <h2><i class="fas fa-shopping-basket"></i> Cart Items</h2>
+                    <% if (cart.items && cart.items.length > 0) { %>
+                        <div class="items-list">
+                            <% cart.items.forEach(item => { %>
+                                <div class="cart-item-card">
+                                    <img src="<%= item.product.imageUrl || item.product.imagePath %>" 
+                                         alt="<%= item.product.name %>" 
+                                         class="item-image">
+                                    <div class="item-details">
+                                        <h3 class="item-name"><%= item.product.name %></h3>
+                                        <% if (item.discountPercentage > 0) { %>
+                                            <p class="item-price original-price">Price: EGP <s><%= item.originalPrice.toFixed(2) %></s></p>
+                                            <p class="item-price discounted-price">Discounted: EGP <%= item.currentPrice.toFixed(2) %></p>
+                                            <span class="item-discount-badge"><%= item.discountPercentage %>% OFF</span>
+                                        <% } else { %>
+                                            <p class="item-price">Price: EGP <%= item.currentPrice.toFixed(2) %></p>
+                                        <% } %>
+                                        <p class="item-quantity">Quantity: <%= item.quantity %></p>
+                                        <p class="item-subtotal">Subtotal: EGP <%= (item.currentPrice * item.quantity).toFixed(2) %></p>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        </div>
+                    <% } else { %>
+                        <div class="empty-state">
+                            <i class="fas fa-box-open"></i>
+                            <p>This cart is empty.</p>
+                        </div>
+                    <% } %>
+                </div>
+
+                <div class="cart-actions-bottom">
+                    <% if (cart._id) { %>
+                    <button class="btn-delete" onclick="deleteCart('<%= cart._id %>')">
+                        <i class="fas fa-trash-alt"></i>
+                        Delete This Cart
+                    </button>
+                    <% } %>
+                </div>
+            </div>
+        <% } else { %>
+            <div class="error-message-card">
+                <i class="fas fa-exclamation-circle"></i>
+                <h2>Cart Not Found</h2>
+                <p>The requested cart could not be found or does not exist.</p>
+                <a href="/admin/carts" class="btn-back-main">Back to Carts List</a>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+<script>
+async function deleteCart(cartId) {
+    if (!cartId) {
+        alert('Invalid cart ID');
+        return;
+    }
+
+    if (!confirm('Are you sure you want to delete this cart? This action cannot be undone.')) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`/admin/carts/${cartId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            window.location.href = '/admin/carts';
+        } else {
+            alert(data.error || 'Failed to delete cart');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to delete cart');
+    }
+}
+</script>
+
+<style>
+/* General Layout */
+.main-content {
+    margin-left: 250px; /* Width of sidebar */
+    margin-top: 60px; /* Height of header */
+    min-height: calc(100vh - 60px); /* Full height minus header */
+    background: #f8f9fa;
+    padding: 2rem;
+    margin-left: 250px; /* Adjust for sidebar */
+    margin-top: 60px;  /* Adjust for header */
+    min-height: calc(100vh - 60px);
+    background-color: #f0f2f5;
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+}
+
+/* Header */
+.header {
+    margin-bottom: 2rem;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background: linear-gradient(135deg, #ffffff, #f9f9f9);
+    padding: 1.2rem 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.header h1 {
+    color: #2c3e50;
+    font-size: 2.2rem;
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.back-button {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: #3498db;
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    background-color: #eaf6fd;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.back-button i {
+    font-size: 1.2rem;
+}
+
+.back-button:hover {
+    background-color: #d8eafb;
+    color: #2980b9;
+    transform: translateY(-2px);
+}
+
+/* Content Area */
+.content {
+    padding: 1rem;
+}
+
+.cart-detail-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 992px) {
+    .cart-detail-container {
+        grid-template-columns: 1fr 1fr;
+    }
+    .cart-items-card {
+        grid-column: span 2; /* Full width for cart items */
+    }
+}
+
+/* Detail Sections (Cards) */
+.detail-section {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.detail-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.detail-section h2 {
+    color: #2c3e50;
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.detail-section h2 i {
+    color: #3498db; /* Accent color for icons */
+    font-size: 1.4rem;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px dashed #ecf0f1;
+    font-size: 1.05rem;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.label {
+    color: #7f8c8d;
+    font-weight: 500;
+}
+
+.value {
+    color: #2c3e50;
+    font-weight: 500;
+}
+
+.total-row .label, .total-row .value {
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: #27ae60; /* Success green for totals */
+}
+
+.total-amount {
+    color: #e67e22; /* Orange accent for total amount */
+}
+
+/* Cart Items List */
+.items-list {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.cart-item-card {
+    display: flex;
+    align-items: center;
+    background-color: #fdfdfd;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.cart-item-card:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.item-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 1.5rem;
+    border: 1px solid #eee;
+}
+
+.item-details {
+    flex-grow: 1;
+}
+
+.item-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.item-price, .item-quantity, .item-subtotal {
+    font-size: 1rem;
+    color: #616161;
+    margin-bottom: 0.3rem;
+}
+
+.item-subtotal {
+    font-weight: 600;
+    color: #34495e;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #95a5a6;
+    font-size: 1.1rem;
+}
+
+.empty-state i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    color: #bdc3c7;
+}
+
+/* Bottom Actions */
+.cart-actions-bottom {
+    grid-column: span 2; /* Takes full width on larger screens */
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem;
+}
+
+.btn-delete {
+    padding: 1rem 2rem;
+    background: linear-gradient(45deg, #e74c3c, #c0392b);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+    transition: all 0.3s ease;
+}
+
+.btn-delete:hover {
+    background: linear-gradient(45deg, #c0392b, #e74c3c);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+}
+
+/* Error Message Card */
+.error-message-card {
+    text-align: center;
+    padding: 3rem;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    grid-column: span 2; /* Full width for error message */
+}
+
+.error-message-card i {
+    font-size: 5rem;
+    color: #e74c3c;
+    margin-bottom: 1.5rem;
+}
+
+.error-message-card h2 {
+    color: #2c3e50;
+    font-size: 2rem;
+    margin-bottom: 0.8rem;
+}
+
+.error-message-card p {
+    color: #7f8c8d;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+.btn-back-main {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(45deg, #3498db, #2980b9);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+    transition: all 0.3s ease;
+}
+
+.btn-back-main:hover {
+    background: linear-gradient(45deg, #2980b9, #3498db);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+        padding: 1rem;
+    }
+
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .header h1 {
+        font-size: 1.8rem;
+    }
+
+    .back-button {
+        font-size: 0.9rem;
+        padding: 0.6rem 1rem;
+    }
+
+    .detail-section {
+        padding: 1.5rem;
+    }
+
+    .detail-section h2 {
+        font-size: 1.4rem;
+    }
+
+    .info-row, .item-price, .item-quantity, .item-subtotal {
+        font-size: 0.95rem;
+    }
+
+    .cart-item-card {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: center;
+    }
+
+    .item-image {
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+
+    .cart-actions-bottom {
+        justify-content: center;
+    }
+
+    .btn-delete {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    .error-message-card {
+        padding: 2rem;
+    }
+
+    .error-message-card h2 {
+        font-size: 1.6rem;
+    }
+
+    .error-message-card p {
+        font-size: 1rem;
+    }
+
+    .btn-back-main {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+    }
+}
+
+/* CSS for discount badge on details page */
+.item-discount-badge {
+    background-color: #28a745; /* Green for discount */
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-left: 0.5rem;
+}
+
+.item-price.original-price {
+    text-decoration: line-through;
+    color: #95a5a6;
+    font-size: 0.9em;
+}
+
+.item-price.discounted-price {
+    color: #e74c3c; /* Red for discounted price */
+    font-weight: 700;
+    font-size: 1.1em;
+}
+</style>

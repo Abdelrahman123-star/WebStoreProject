@@ -1,15 +1,24 @@
- <!-- Sidebar -->
-    <aside class="sidebar">
-      <ul>
-        <li  class="<%= activePage === 'dashboard' ? 'active' : '' %>"><a href="./dashboard" data-section="dashboard"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
-        
-        <li class="<%= activePage === 'products' ? 'active' : '' %>">
+<!-- Sidebar -->
+<aside class="sidebar">
+  <ul>
+    <li  class="<%= activePage === 'dashboard' ? 'active' : '' %>"><a href="./dashboard" data-section="dashboard"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+    
+    <li class="<%= activePage === 'products' ? 'active' : '' %>">
+      <a href="./products" data-section="products"><i class="fas fa-box"></i><span>Products</span></a>
+    </li>
 
-          <a href="./products" data-section="products"><i class="fas fa-box"></i><span>Products</span></a>
+    <li class="<%= activePage === 'categories' ? 'active' : '' %>"><a href="/admin/categories" data-section="categories"><i class="fas fa-edit"></i><span>Categories</span></a></li>
 
-        </li>
-        <li class="<%= activePage === 'orders' ? 'active' : '' %>"><a href="./orders" data-section="orders"><i class="fas fa-shopping-cart"></i><span>Orders</span></a></li>
-        <li class="<%= activePage === 'users' ? 'active' : '' %>"><a href="./users" data-section="users"><i class="fas fa-users"></i><span>Users</span></a></li>
-        <li class="<%= activePage === 'settings' ? 'active' : '' %>"><a href="./settings" data-section="settings"><i class="fas fa-cog"></i><span>Settings</span></a></li>
-      </ul>
-    </aside>
+    <li class="<%= activePage === 'discounts' ? 'active' : '' %>"><a href="/admin/discounts" data-section="discounts"><i class="fas fa-tags"></i><span>Discounts</span></a></li>
+
+    <li class="<%= activePage === 'carts' ? 'active' : '' %>"><a href="/admin/carts" data-section="carts"><i class="fas fa-shopping-basket"></i><span>Carts</span></a></li>
+
+    <li class="<%= activePage === 'orders' ? 'active' : '' %>"><a href="./orders" data-section="orders"><i class="fas fa-shopping-cart"></i><span>Orders</span></a></li>
+
+    <li class="<%= activePage === 'users' ? 'active' : '' %>"><a href="./users" data-section="users"><i class="fas fa-users"></i><span>Users</span></a></li>
+
+    <li class="<%= activePage === 'comments' ? 'active' : '' %>"><a href="/admin/comments" data-section="comments"><i class="fas fa-comments"></i><span>Comments</span></a></li>
+
+    <li class="<%= activePage === 'settings' ? 'active' : '' %>"><a href="./settings" data-section="settings"><i class="fas fa-cog"></i><span>Settings</span></a></li>
+  </ul>
+</aside>

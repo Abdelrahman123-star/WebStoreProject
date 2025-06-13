@@ -1,0 +1,285 @@
+<%- include('../adminComponents/head') %>
+<%- include('../adminComponents/header') %>
+<%- include('../adminComponents/slideBar') %>
+<link rel="stylesheet" href="/css/adminHomePage.css">
+<link rel="stylesheet" href="/css/admin/discounts.css">
+
+<div class="main-content">
+  <div class="header">
+    <h1>Edit Discount</h1>
+    <a href="/admin/discounts" class="btn btn-secondary">
+      <i class="fas fa-arrow-left"></i> Back to Discounts
+    </a>
+  </div>
+
+  <div class="form-container">
+    <form action="/admin/discounts/<%= discount._id %>/edit" method="POST" class="discount-form">
+      <div class="form-section">
+        <h2>Basic Information</h2>
+        
+        <div class="form-group">
+          <label for="name">Discount Name</label>
+          <input type="text" id="name" name="name" value="<%= discount.name %>" required>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea id="description" name="description" rows="3"><%= discount.description %></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="type">Discount Type</label>
+            <select id="type" name="type" required>
+              <option value="percentage" <%= discount.type === 'percentage' ? 'selected' : '' %>>Percentage</option>
+              <option value="fixed" <%= discount.type === 'fixed' ? 'selected' : '' %>>Fixed Amount</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="value">Value</label>
+            <input type="number" id="value" name="value" min="0" step="0.01" value="<%= discount.value %>" required>
+            <span class="value-hint">Enter percentage or amount in LE</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2>Time Period</h2>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="startDate">Start Date</label>
+            <input type="datetime-local" id="startDate" name="startDate" 
+                   value="<%= new Date(discount.startDate).getFullYear() %>-<%= (new Date(discount.startDate).getMonth() + 1).toString().padStart(2, '0') %>-<%= new Date(discount.startDate).getDate().toString().padStart(2, '0') %>T<%= new Date(discount.startDate).getHours().toString().padStart(2, '0') %>:<%= new Date(discount.startDate).getMinutes().toString().padStart(2, '0') %>" required>
+          </div>
+
+          <div class="form-group">
+            <label for="endDate">End Date</label>
+            <input type="datetime-local" id="endDate" name="endDate" 
+                   value="<%= new Date(discount.endDate).getFullYear() %>-<%= (new Date(discount.endDate).getMonth() + 1).toString().padStart(2, '0') %>-<%= new Date(discount.endDate).getDate().toString().padStart(2, '0') %>T<%= new Date(discount.endDate).getHours().toString().padStart(2, '0') %>:<%= new Date(discount.endDate).getMinutes().toString().padStart(2, '0') %>" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2>Scope</h2>
+        
+        <div class="form-group">
+          <label>Products</label>
+          <div class="tag-input-container" id="productTagInputContainer">
+            <div class="selected-tags" id="selectedProductsTags"></div>
+            <input type="text" class="tag-search-input" id="productSearchInput" placeholder="Search products..." autocomplete="off">
+            <div class="tag-options-dropdown" id="productOptionsDropdown">
+              <!-- Options populated by JavaScript -->
+            </div>
+            <!-- Hidden select to hold selected values for form submission -->
+            <select id="products" name="products" multiple style="display: none;">
+              <% products.forEach(product => { %>
+                <option value="<%= product._id %>" 
+                        <%= discount.products.some(p => p._id.toString() === product._id.toString()) ? 'selected' : '' %>>
+                  <%= product.name %> - <%= product.price %> LE
+                </option>
+              <% }) %>
+            </select>
+          </div>
+          <span class="select-hint">Type to search and select products.</span>
+        </div>
+
+        <div class="form-group">
+          <label>Categories</label>
+          <div class="tag-input-container" id="categoryTagInputContainer">
+            <div class="selected-tags" id="selectedCategoriesTags"></div>
+            <input type="text" class="tag-search-input" id="categorySearchInput" placeholder="Search categories..." autocomplete="off">
+            <div class="tag-options-dropdown" id="categoryOptionsDropdown">
+              <!-- Options populated by JavaScript -->
+            </div>
+            <!-- Hidden select to hold selected values for form submission -->
+            <select id="categories" name="categories" multiple style="display: none;">
+              <% categories.forEach(category => { %>
+                <option value="<%= category._id %>"
+                        <%= discount.categories.some(c => c._id.toString() === category._id.toString()) ? 'selected' : '' %>>
+                  <%= category.name %>
+                </option>
+              <% }) %>
+            </select>
+          </div>
+          <span class="select-hint">Type to search and select categories.</span>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-save"></i> Update Discount
+        </button>
+        <a href="/admin/discounts" class="btn btn-secondary">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script type="application/json" id="productsData">
+  <%- JSON.stringify(products) %>
+</script>
+
+<script type="application/json" id="categoriesData">
+  <%- JSON.stringify(categories) %>
+</script>
+
+<script>
+  const allProductsData = JSON.parse(document.getElementById('productsData').textContent);
+  const allCategoriesData = JSON.parse(document.getElementById('categoriesData').textContent);
+
+document.addEventListener('DOMContentLoaded', function() {
+  const typeSelect = document.getElementById('type');
+  const valueInput = document.getElementById('value');
+  const valueHint = document.querySelector('.value-hint');
+
+  typeSelect.addEventListener('change', function() {
+    if (this.value === 'percentage') {
+      valueInput.max = '100';
+      valueHint.textContent = 'Enter percentage (0-100)';
+    } else {
+      valueInput.removeAttribute('max');
+      valueHint.textContent = 'Enter amount in LE';
+    }
+  });
+
+  // Set minimum dates for start and end date inputs
+  const startDateInput = document.getElementById('startDate');
+  const endDateInput = document.getElementById('endDate');
+  const now = new Date().toISOString().slice(0, 16);
+  
+  startDateInput.min = now;
+  endDateInput.min = now;
+
+  startDateInput.addEventListener('change', function() {
+    endDateInput.min = this.value;
+  });
+
+  // Initialize value hint based on current type
+  if (typeSelect.value === 'percentage') {
+    valueInput.max = '100';
+    valueHint.textContent = 'Enter percentage (0-100)';
+  } else {
+    valueInput.removeAttribute('max');
+    valueHint.textContent = 'Enter amount in LE';
+  }
+
+  // New Tag Input Logic
+  function setupTagInput(containerId, searchInputId, tagsContainerId, optionsDropdownId, hiddenSelectId, allItems) {
+    const container = document.getElementById(containerId);
+    const searchInput = document.getElementById(searchInputId);
+    const tagsContainer = document.getElementById(tagsContainerId);
+    const optionsDropdown = document.getElementById(optionsDropdownId);
+    const hiddenSelect = document.getElementById(hiddenSelectId);
+
+    // Populate initial selected tags
+    Array.from(hiddenSelect.options).forEach(option => {
+      if (option.selected) {
+        addTag(option.value, option.textContent);
+      }
+    });
+
+    function renderOptions(filter = '') {
+      optionsDropdown.innerHTML = '';
+      const filteredItems = allItems.filter(item => 
+        !Array.from(hiddenSelect.options).some(opt => opt.selected && opt.value === item._id) &&
+        item.name.toLowerCase().includes(filter.toLowerCase())
+      );
+
+      if (filteredItems.length === 0 && filter !== '') {
+        optionsDropdown.innerHTML = '<div class="tag-option-item no-results">No results found</div>';
+        optionsDropdown.style.display = 'block';
+        return;
+      }
+      if (filteredItems.length === 0 && filter === '') {
+        optionsDropdown.style.display = 'none';
+        return;
+      }
+
+      filteredItems.forEach(item => {
+        const optionElement = document.createElement('div');
+        optionElement.classList.add('tag-option-item');
+        optionElement.dataset.id = item._id;
+        optionElement.textContent = item.name + (item.price ? ' - ' + item.price + ' LE' : '');
+        optionsDropdown.appendChild(optionElement);
+      });
+      optionsDropdown.style.display = 'block';
+    }
+
+    function addTag(id, name) {
+      const tag = document.createElement('span');
+      tag.classList.add('tag');
+      tag.dataset.id = id;
+      tag.innerHTML = `${name} <i class="fas fa-times remove-tag"></i>`;
+      tagsContainer.appendChild(tag);
+
+      const optionToSelect = Array.from(hiddenSelect.options).find(option => option.value === id);
+      if (optionToSelect) {
+        optionToSelect.selected = true;
+      }
+    }
+
+    tagsContainer.addEventListener('click', function(event) {
+      if (event.target.classList.contains('remove-tag')) {
+        const tag = event.target.closest('.tag');
+        const idToRemove = tag.dataset.id;
+        
+        const optionToDeselect = Array.from(hiddenSelect.options).find(option => option.value === idToRemove);
+        if (optionToDeselect) {
+          optionToDeselect.selected = false;
+        }
+        tag.remove();
+        renderOptions(searchInput.value); 
+      }
+    });
+
+    let debounceTimeout;
+    searchInput.addEventListener('input', function() {
+      clearTimeout(debounceTimeout);
+      debounceTimeout = setTimeout(() => {
+        renderOptions(this.value);
+      }, 300);
+    });
+
+    searchInput.addEventListener('focus', () => renderOptions(searchInput.value));
+
+    optionsDropdown.addEventListener('click', function(event) {
+      if (event.target.classList.contains('tag-option-item') && !event.target.classList.contains('no-results')) {
+        const id = event.target.dataset.id;
+        const name = event.target.textContent;
+        addTag(id, name);
+        searchInput.value = ''; 
+        optionsDropdown.style.display = 'none'; 
+        renderOptions(); 
+      }
+    });
+
+    document.addEventListener('click', function(event) {
+      if (!container.contains(event.target)) {
+        optionsDropdown.style.display = 'none';
+      }
+    });
+  }
+
+  setupTagInput(
+    'productTagInputContainer', 
+    'productSearchInput', 
+    'selectedProductsTags', 
+    'productOptionsDropdown', 
+    'products', 
+    allProductsData
+  );
+
+  setupTagInput(
+    'categoryTagInputContainer', 
+    'categorySearchInput', 
+    'selectedCategoriesTags', 
+    'categoryOptionsDropdown', 
+    'categories', 
+    allCategoriesData
+  );
+});
+</script>
+
