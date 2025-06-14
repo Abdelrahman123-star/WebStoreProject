@@ -12,8 +12,8 @@ let currentSlide = 0;
 let autoPlayInterval;
 
 const carouselInner = document.querySelector('.carousel-inner');
-const slides = document.querySelectorAll('.carousel-item');
-const dots = document.querySelectorAll('.dot');
+const slides = document.querySelectorAll('.carousel-slide');
+const dots = document.querySelectorAll('.indicator');
 
 // Function to show a specific slide
 function showSlide(index) {

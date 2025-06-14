@@ -1,0 +1,413 @@
+{
+  "welcome": "Welcome",
+  "login": "Login",
+  "register": "Register",
+  "email": "Email",
+  "password": "Password",
+  "submit": "Submit",
+  "cancel": "Cancel",
+  "loginPage": {
+    "title": "Login to Your Account",
+    "emailPlaceholder": "Enter your email",
+    "passwordPlaceholder": "Enter your password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot Password?",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign Up",
+    "passwordError": "Passwords do not match",
+    "phoneError": "Please enter a valid Egyptian phone number"
+  },
+  "signupPage": {
+    "title": "Create Account",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "Enter your full name",
+    "emailPlaceholder": "Enter your email",
+    "passwordPlaceholder": "Enter your password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "phonePlaceholder": "e.g., 1012345678",
+    "phoneError": "Please enter a valid Egyptian phone number (10, 11, 12, or 15 followed by 8 digits)",
+    "passwordError": "Passwords do not match!",
+    "streetPlaceholder": "Street Address",
+    "cityPlaceholder": "City",
+    "submit": "Sign Up",
+    "haveAccount": "Already have an account?",
+    "login": "Login"
+  },
+  "homePage": {
+    "title": "MyStore Home Page",
+    "carousel": {
+      "sale": {
+        "title": "Big Sale! Up to 50% Off",
+        "description": "Shop now and enjoy amazing discounts."
+      },
+      "newArrivals": {
+        "title": "New Arrivals",
+        "description": "Explore the latest trends in fashion."
+      },
+      "freeShipping": {
+        "title": "Free Shipping",
+        "description": "On all orders over 500LE."
+      }
+    },
+    "search": {
+      "title": "Discover Amazing Products",
+      "subtitle": "Your One-Stop Shop for Quality & Style",
+      "placeholder": "What are you looking for today?",
+      "categories": "All Categories",
+      "minPrice": "Min Price",
+      "maxPrice": "Max Price",
+      "searchButton": "Search Products"
+    },
+    "featuredProducts": {
+      "title": "Featured Products",
+      "quickView": "Quick View",
+      "addToCart": "Add to Cart",
+      "noProducts": "No featured products available"
+    },
+    "categories": {
+      "title": "Shop by Category",
+      "seeAll": "See All Categories"
+    }
+  },
+  "aboutPage": {
+    "title": "About Us - ShopEase",
+    "welcome": {
+      "title": "Welcome to",
+      "highlight": "OurShop!",
+      "description": "We're not just another online store—we're your go-to shopping destination! At OurShop, we make sure you get the best products at the best prices, without the hassle."
+    },
+    "features": {
+      "bestDeals": {
+        "title": "🔥 Best Deals",
+        "description": "prices that don't hurt your wallet!"
+      },
+      "fastDelivery": {
+        "title": "🚀 Fast Delivery",
+        "description": "Quick, reliable, and safe shipping at your doorstep."
+      },
+      "support": {
+        "title": "🛎️ 24/7 Support",
+        "description": "Got a question? We're here for you anytime!"
+      }
+    },
+    "history": "Founded in 2023, we started with a simple idea: make online shopping fun and stress-free. Now, we're proud to serve thousands of happy customers worldwide. 🎉",
+    "cards": {
+      "fastDelivery": {
+        "title": "Fast Delivery",
+        "description": "Free shipping on orders over 200LE",
+        "link": "Learn More"
+      },
+      "secureShopping": {
+        "title": "Secure Shopping",
+        "description": "100% secure payment",
+        "link": "Learn More"
+      },
+      "support": {
+        "title": "24/7 Support",
+        "description": "Always here to help",
+        "link": "Learn More"
+      }
+    }
+  },
+  "categoryPage": {
+    "title": "Shop by Category - MyStore",
+    "noCategories": {
+      "title": "No Categories Found",
+      "description": "There are no categories available at the moment."
+    },
+    "categoryCard": {
+      "quickView": "Quick View",
+      "products": "Products",
+      "explore": "Explore our products"
+    }
+  },
+  "productsPage": {
+    "title": "Products - MyStore",
+    "filters": {
+      "all": "All",
+      "onSale": "On Sale",
+      "sort": {
+        "newest": "Newest",
+        "priceLow": "Price: Low to High",
+        "priceHigh": "Price: High to Low",
+        "rating": "Highest Rated"
+      },
+      "rating": {
+        "title": "Rating",
+        "select": "Select rating",
+        "starsAndUp": "stars & up"
+      }
+    },
+    "productCard": {
+      "quickView": "Quick View",
+      "addToCart": "Add to Cart",
+      "inStock": "In Stock",
+      "lowStock": "Low Stock",
+      "outOfStock": "Out of Stock",
+      "noReviews": "No reviews yet",
+      "sold": "Sold"
+    },
+    "noProducts": {
+      "title": "No Products Found",
+      "description": "There are no products available in this category at the moment."
+    }
+  },
+  "productDetailPage": {
+    "title": "Product Details",
+    "description": "Description",
+    "stock": {
+      "inStock": "In Stock",
+      "lowStock": "Low Stock",
+      "outOfStock": "Out of Stock",
+      "available": "available"
+    },
+    "actions": {
+      "addToCart": "Add to Cart",
+      "loginToAdd": "Login to Add to Cart",
+      "buyNow": "Buy Now",
+      "quantity": "Quantity"
+    },
+    "reviews": {
+      "title": "Customer Reviews",
+      "overallRating": "Overall Rating",
+      "reviews": "reviews",
+      "stars": "stars",
+      "yourRating": "Your Rating",
+      "yourReview": "Your Review",
+      "reviewPlaceholder": "Share your experience with this product...",
+      "submitReview": "Submit Review",
+      "loginToReview": "Please login to leave a review",
+      "login": "login",
+      "noReviews": "No reviews yet. Be the first to review this product!",
+      "status": {
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected"
+      }
+    },
+    "relatedProducts": {
+      "title": "More Products You Might Like",
+      "noProducts": "No related products found."
+    },
+    "zoom": {
+      "hint": "Click to zoom"
+    }
+  },
+  "adminDashboard": {
+    "title": "Admin Dashboard",
+    "overview": {
+      "title": "Dashboard Overview",
+      "totalProducts": "Total Products",
+      "totalOrders": "Total Orders",
+      "totalUsers": "Total Users",
+      "totalRevenue": "Total Revenue"
+    },
+    "recentOrders": {
+      "title": "Recent Orders",
+      "orderId": "Order ID",
+      "customer": "Customer",
+      "date": "Date",
+      "amount": "Amount",
+      "status": "Status",
+      "noOrders": "No recent orders"
+    },
+    "lowStock": {
+      "title": "Low Stock Products",
+      "productName": "Product Name",
+      "currentStock": "Current Stock",
+      "price": "Price",
+      "noProducts": "No low stock products"
+    },
+    "topSelling": {
+      "title": "Top Selling Products",
+      "productName": "Product Name",
+      "totalSold": "Total Sold",
+      "currentStock": "Current Stock",
+      "price": "Price",
+      "noData": "No sales data available"
+    }
+  },
+  "adminProducts": {
+    "title": "Products Management",
+    "addProduct": "Add Product",
+    "inStock": "In Stock",
+    "outOfStock": "Out of Stock",
+    "uncategorized": "Uncategorized",
+    "price": "Price",
+    "stock": "Stock",
+    "edit": "Edit",
+    "delete": "Delete",
+    "addNewProduct": "Add New Product",
+    "productImage": "Product Image",
+    "imagePreview": "Image will appear here",
+    "uploadImage": "Upload Image",
+    "or": "OR",
+    "pasteImageUrl": "Paste image URL",
+    "productName": "Product Name*",
+    "stockQuantity": "Stock Quantity*",
+    "category": "Category*",
+    "selectCategory": "Select a category",
+    "description": "Description*",
+    "deleteProduct": "Delete Product",
+    "deleteConfirm": "Are you sure you want to delete",
+    "deleteWarning": "This action cannot be undone."
+  },
+  "adminCategories": {
+    "title": "Category Management",
+    "addCategory": "Add Category",
+    "created": "Created",
+    "products": "Products",
+    "edit": "Edit",
+    "delete": "Delete",
+    "noCategories": "No Categories Found",
+    "addCategoryPrompt": "Click \"Add Category\" to get started.",
+    "addNewCategory": "Add New Category",
+    "categoryImage": "Category Image",
+    "imagePreview": "Image will appear here",
+    "uploadImage": "Upload Image",
+    "or": "OR",
+    "pasteImageUrl": "Paste image URL",
+    "categoryName": "Category Name*",
+    "description": "Description*",
+    "cancel": "Cancel",
+    "deleteCategory": "Delete Category",
+    "deleteConfirm": "Are you sure you want to delete",
+    "deleteWarning": "This action cannot be undone."
+  },
+  "adminDiscounts": {
+    "title": "Manage Discounts",
+    "createNew": "Create New Discount",
+    "type": "Type:",
+    "percentage": "Percentage",
+    "fixedAmount": "Fixed Amount",
+    "value": "Value:",
+    "startDate": "Start Date:",
+    "endDate": "End Date:",
+    "products": "Products:",
+    "categories": "Categories:",
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleteConfirm": "Are you sure you want to delete this discount?",
+    "noDiscounts": "No discounts found",
+    "createFirst": "Create Your First Discount",
+    "editTitle": "Edit Discount",
+    "createTitle": "Create New Discount",
+    "backToDiscounts": "Back to Discounts",
+    "basicInfo": "Basic Information",
+    "discountName": "Discount Name",
+    "description": "Description",
+    "discountType": "Discount Type",
+    "valueHint": "Enter percentage or amount in LE",
+    "percentageHint": "Enter percentage (0-100)",
+    "fixedAmountHint": "Enter amount in LE",
+    "timePeriod": "Time Period",
+    "scope": "Scope",
+    "searchProducts": "Search products...",
+    "searchCategories": "Search categories...",
+    "searchProductsHint": "Type to search and select products.",
+    "searchCategoriesHint": "Type to search and select categories.",
+    "updateDiscount": "Update Discount",
+    "createDiscount": "Create Discount",
+    "noResults": "No results found"
+  },
+  "adminCarts": {
+    "title": "Manage Carts",
+    "quantity": "Qty:",
+    "moreItems": "+{{count}} more items",
+    "emptyCart": "No items in cart",
+    "total": "Total:",
+    "viewDetails": "View Details",
+    "delete": "Delete",
+    "noCarts": "No Carts Found",
+    "noCartsMessage": "There are no active shopping carts at the moment.",
+    "deleteConfirmTitle": "Confirm Deletion",
+    "deleteConfirmMessage": "Are you sure you want to delete this cart? This action cannot be undone.",
+    "confirmDelete": "Yes, Delete",
+    "cancelDelete": "No, Cancel",
+    "invalidCartId": "Invalid cart ID. Please refresh the page.",
+    "deleteError": "Failed to delete cart",
+    "deleteSuccess": "Cart deleted successfully!",
+    "backToCarts": "Back to Carts",
+    "cartDetails": "Cart Details",
+    "cartOverview": "Cart Overview",
+    "cartId": "Cart ID:",
+    "created": "Created:",
+    "lastUpdated": "Last Updated:",
+    "totalItems": "Total Items:",
+    "totalAmount": "Total Amount:",
+    "userInfo": "User Information",
+    "userId": "User ID:",
+    "username": "Username:",
+    "email": "Email:",
+    "user": "User:",
+    "unknownUser": "Unknown User",
+    "cartItems": "Cart Items",
+    "price": "Price:",
+    "discounted": "Discounted:",
+    "off": "OFF",
+    "subtotal": "Subtotal:",
+    "deleteThisCart": "Delete This Cart",
+    "cartNotFound": "Cart Not Found",
+    "cartNotFoundMessage": "The requested cart could not be found or does not exist.",
+    "backToCartsList": "Back to Carts List"
+  },
+  "adminOrders": {
+    "title": "Orders Management",
+    "searchPlaceholder": "Search orders...",
+    "allStatus": "All Status",
+    "statuss": {
+      "pending": "Pending",
+      "processing": "Processing",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    },
+    "orderId": "Order ID",
+    "customer": "Customer",
+    "date": "Date",
+    "total": "Total",
+    "status": "Status",
+    "actions": "Actions",
+    "deletedUser": "Deleted User",
+    "noOrders": "No orders found",
+    "orderDetails": "Order Details",
+    "paymentMethod": "Payment Method",
+    "items": "Items",
+    "quantity": "Quantity",
+    "unitPrice": "Unit Price",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "grandTotal": "Grand Total",
+    "statusUpdateSuccess": "Order status updated successfully"
+  },
+  "adminUsers": {
+    "title": "Users Management",
+    "searchPlaceholder": "Search users...",
+    "allRoles": "All Roles",
+    "role": {
+      "customer": "User",
+      "admin": "Admin"
+    },
+    "username": "Username",
+    "email": "Email",
+    "roleLabel": "Role",
+    "actions": "Actions",
+    "noUsers": "No users found",
+    "userDetails": "User Details",
+    "fullName": "Full Name",
+    "phone": "Phone",
+    "address": "Address",
+    "createdAt": "Created At",
+    "lastLogin": "Last Login",
+    "roleUpdateSuccess": "User role updated successfully",
+    "deleteSuccess": "User deleted successfully",
+    "deleteConfirm": "Are you sure you want to delete this user?",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "view": "View",
+    "city": "City",
+    "street": "Street",
+    "saveChanges":"Save Changes"
+  }
+} 

@@ -8,10 +8,6 @@
 
 body {
   background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
   padding: 20px;
 }
 
@@ -23,6 +19,7 @@ body {
   padding: 2rem;
   width: 100%;
   max-width: 500px;
+  margin: 40px auto;
 }
 
 .payment-container h2 {
