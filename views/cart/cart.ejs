@@ -1,0 +1,761 @@
+          <%- include('../components/header') %>
+
+<div class="cart-container">
+    <div class="cart-header">
+        <h1>Your Cart</h1>
+        <p class="cart-subtitle">Review your items and proceed to checkout</p>
+    </div>
+
+    <% if (message) { %>
+        <div class="login-prompt">
+            <div class="login-message">
+                <i class="fas fa-user-circle"></i>
+                <p><%= message %></p>
+            </div>
+            <% if (!user) { %>
+                <a href="/login" class="login-button">Login to Continue</a>
+            <% } %>
+        </div>
+    <% } %>
+
+    <% if (!cart || !cart.items || cart.items.length === 0) { %>
+        <div class="empty-cart">
+            <div class="empty-cart-icon">
+                <i class="fas fa-shopping-basket"></i>
+            </div>
+            <h2>Your cart is empty</h2>
+            <p>Looks like you haven't added anything to your cart yet</p>
+            <a href="/products" class="continue-shopping">
+                <i class="fas fa-arrow-left"></i>
+                Continue Shopping
+            </a>
+        </div>
+    <% } else { %>
+        <div class="cart-content">
+            <div class="cart-items">
+                <% cart.items.forEach(item => { %>
+                    <div class="cart-item" data-product-id="<%= item.product.id %>">
+                        <div class="item-image">
+                            <img src="<%= item.product.imageUrl || item.product.imagePath %>" 
+                                 alt="<%= item.product.name %>">
+                        </div>
+                <div class="item-details">
+                            <div class="item-header">
+                                <h3><%= item.product.name %></h3>
+                                <button class="remove-item" data-product-id="<%= item.product.id %>">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="item-price">
+                                <% if (item.discountPercentage > 0) { %>
+                                    <div class="price-with-discount">
+                                        <span class="original-price">$<%= (item.product.price * item.quantity).toFixed(2) %></span>
+                                        <span class="discounted-price">$<%= (item.currentPrice * item.quantity).toFixed(2) %></span>
+                                        <span class="discount-badge"><%= item.discountPercentage %>% OFF</span>
+                                    </div>
+                                <% } else { %>
+                                    <span class="price">$<%= (item.currentPrice * item.quantity).toFixed(2) %></span>
+                                <% } %>
+                            </div>
+
+                            <div class="quantity-control">
+                                <button class="quantity-btn decrease" data-product-id="<%= item.product.id %>">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <span class="quantity"><%= item.quantity %></span>
+                                <button class="quantity-btn increase" data-product-id="<%= item.product.id %>">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+
+            <div class="cart-summary">
+                <div class="summary-header">
+                    <h2>Order Summary</h2>
+                </div>
+                <div class="summary-content">
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span>$<%= cart.totalAmount %></span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping</span>
+                        <% if (parseFloat(cart.totalAmount) >= freeShippingThreshold && freeShippingThreshold > 0) { %>
+                        <span class="free">Free</span>
+                        <% } else { %>
+                            <span>$<%= defaultShippingCost.toFixed(2) %></span>
+                        <% } %>
+            </div>
+                    <div class="summary-divider"></div>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <% 
+                            let finalTotal = parseFloat(cart.totalAmount);
+                            if (finalTotal < freeShippingThreshold || freeShippingThreshold === 0) {
+                                finalTotal += defaultShippingCost;
+                            }
+                        %>
+                        <span>$<%= finalTotal.toFixed(2) %></span>
+                    </div>
+                </div>
+                <div class="summary-actions">
+                    <a href="/myCart/payment" class="checkout-button">
+                        <i class="fas fa-lock"></i>
+                        Proceed to Checkout
+                    </a>
+                    <button class="clear-cart">
+                        <i class="fas fa-trash"></i>
+                        Clear Cart
+                    </button>
+                </div>
+            </div>
+        </div>
+    <% } %>
+</div>
+
+<!-- Custom Modal Dialog -->
+<div id="confirmationModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Confirm Action</h3>
+            <button class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p id="modalMessage"></p>
+        </div>
+        <div class="modal-footer">
+            <button class="modal-btn cancel-btn">Cancel</button>
+            <button class="modal-btn confirm-btn">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Modern Cart Styles */
+.cart-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.cart-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.cart-header h1 {
+    font-size: 2.5rem;
+    color: #2d3436;
+    margin-bottom: 0.5rem;
+}
+
+.cart-subtitle {
+    color: #636e72;
+    font-size: 1.1rem;
+}
+
+/* Login Prompt */
+.login-prompt {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.login-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.login-message i {
+    font-size: 2rem;
+    color: #0984e3;
+}
+
+.login-button {
+    display: inline-block;
+    background: #0984e3;
+    color: white;
+    padding: 0.8rem 2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.login-button:hover {
+    background: #0873c4;
+    transform: translateY(-2px);
+}
+
+/* Empty Cart */
+.empty-cart {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+}
+
+.empty-cart-icon {
+    font-size: 4rem;
+    color: #b2bec3;
+    margin-bottom: 1.5rem;
+}
+
+.empty-cart h2 {
+    color: #2d3436;
+    margin-bottom: 1rem;
+}
+
+.empty-cart p {
+    color: #636e72;
+    margin-bottom: 2rem;
+}
+
+.continue-shopping {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #0984e3;
+    color: white;
+    padding: 0.8rem 2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.continue-shopping:hover {
+    background: #0873c4;
+    transform: translateY(-2px);
+}
+
+/* Cart Content */
+.cart-content {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 2rem;
+}
+
+/* Cart Items */
+.cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.cart-item {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 1.5rem;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.cart-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.item-image img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.item-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.item-header h3 {
+    font-size: 1.2rem;
+    color: #2d3436;
+    margin: 0;
+}
+
+.remove-item {
+    background: none;
+    border: none;
+    color: #636e72;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.remove-item:hover {
+    color: #d63031;
+}
+
+.item-price {
+    margin: 1rem 0;
+}
+
+.price-with-discount {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.original-price {
+    color: #b2bec3;
+    text-decoration: line-through;
+}
+
+.discounted-price {
+    color: #d63031;
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.discount-badge {
+    background: #ffeaa7;
+    color: #fdcb6e;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.price {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2d3436;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: #f8f9fa;
+    padding: 0.5rem;
+    border-radius: 8px;
+    width: fit-content;
+}
+
+.quantity-btn {
+    background: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.quantity-btn:hover {
+    background: #0984e3;
+    color: white;
+}
+
+.quantity {
+    font-weight: 600;
+    min-width: 30px;
+    text-align: center;
+}
+
+/* Cart Summary */
+.cart-summary {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 2rem;
+}
+
+.summary-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #f1f2f6;
+}
+
+.summary-header h2 {
+    margin: 0;
+    color: #2d3436;
+    font-size: 1.5rem;
+}
+
+.summary-content {
+    padding: 1.5rem;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    color: #636e72;
+}
+
+.summary-row.free {
+    color: #00b894;
+}
+
+.summary-divider {
+    height: 1px;
+    background: #f1f2f6;
+    margin: 1rem 0;
+}
+
+.summary-row.total {
+    color: #2d3436;
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.summary-actions {
+    padding: 1.5rem;
+    border-top: 1px solid #f1f2f6;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.checkout-button {
+    background: #0984e3;
+    color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.checkout-button:hover {
+    background: #0873c4;
+    transform: translateY(-2px);
+}
+
+.clear-cart {
+    background: #f8f9fa;
+    color: #636e72;
+    border: none;
+    padding: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.clear-cart:hover {
+    background: #ffeaa7;
+    color: #fdcb6e;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .cart-content {
+        grid-template-columns: 1fr;
+    }
+
+    .cart-summary {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .cart-container {
+        padding: 1rem;
+    }
+
+    .cart-item {
+        grid-template-columns: 100px 1fr;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .item-image img {
+        height: 100px;
+    }
+
+    .item-header h3 {
+        font-size: 1rem;
+    }
+
+    .price-with-discount {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal.show {
+    display: flex;
+    opacity: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.modal.show .modal-content {
+    transform: translateY(0);
+}
+
+.modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #f1f2f6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #2d3436;
+    font-size: 1.5rem;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #636e72;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.close-modal:hover {
+    color: #d63031;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-body p {
+    margin: 0;
+    color: #2d3436;
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+.modal-footer {
+    padding: 1.5rem;
+    border-top: 1px solid #f1f2f6;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.modal-btn {
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cancel-btn {
+    background: #f8f9fa;
+    color: #636e72;
+}
+
+.cancel-btn:hover {
+    background: #e9ecef;
+}
+
+.confirm-btn {
+    background: #d63031;
+    color: white;
+}
+
+.confirm-btn:hover {
+    background: #c23616;
+    transform: translateY(-2px);
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Modal functionality
+    const modal = document.getElementById('confirmationModal');
+    const modalMessage = document.getElementById('modalMessage');
+    const closeModal = document.querySelector('.close-modal');
+    const cancelBtn = document.querySelector('.cancel-btn');
+    const confirmBtn = document.querySelector('.confirm-btn');
+    
+    let confirmCallback = null;
+
+    function showModal(message, callback) {
+        modalMessage.textContent = message;
+        confirmCallback = callback;
+        modal.classList.add('show');
+    }
+
+    function hideModal() {
+        modal.classList.remove('show');
+        confirmCallback = null;
+    }
+
+    closeModal.addEventListener('click', hideModal);
+    cancelBtn.addEventListener('click', hideModal);
+    confirmBtn.addEventListener('click', () => {
+        if (confirmCallback) {
+            confirmCallback();
+        }
+        hideModal();
+    });
+
+    // Update quantity
+    async function updateQuantity(productId, change) {
+        try {
+            const response = await fetch(`/myCart/update/${productId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ change })
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                if (data.redirect) {
+                    window.location.href = data.redirect;
+                    return;
+                }
+                throw new Error(data.error || 'Failed to update quantity');
+            }
+
+            const data = await response.json();
+            if (data.success) {
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showModal(error.message, () => {});
+        }
+    }
+
+    // Remove item
+    async function removeItem(productId) {
+        showModal('Are you sure you want to remove this item?', async () => {
+        try {
+            const response = await fetch(`/myCart/remove/${productId}`, {
+                method: 'DELETE'
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                if (data.redirect) {
+                    window.location.href = data.redirect;
+                    return;
+                }
+                throw new Error(data.error || 'Failed to remove item');
+            }
+
+            const data = await response.json();
+            if (data.success) {
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('Error:', error);
+                showModal(error.message, () => {});
+        }
+        });
+    }
+
+    // Clear cart
+    async function clearCart() {
+        showModal('Are you sure you want to clear your cart?', async () => {
+        try {
+            const response = await fetch('/myCart/clear', {
+                method: 'DELETE'
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                if (data.redirect) {
+                    window.location.href = data.redirect;
+                    return;
+                }
+                throw new Error(data.error || 'Failed to clear cart');
+            }
+
+            const data = await response.json();
+            if (data.success) {
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('Error:', error);
+                showModal(error.message, () => {});
+        }
+        });
+    }
+
+    // Event listeners
+    document.querySelectorAll('.increase').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const productId = e.target.closest('button').dataset.productId;
+            updateQuantity(productId, 1);
+        });
+    });
+
+    document.querySelectorAll('.decrease').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const productId = e.target.closest('button').dataset.productId;
+            updateQuantity(productId, -1);
+        });
+    });
+
+    document.querySelectorAll('.remove-item').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const productId = e.target.closest('button').dataset.productId;
+            removeItem(productId);
+        });
+    });
+
+    document.querySelector('.clear-cart')?.addEventListener('click', clearCart);
+});
+</script>
+
+      <%- include('../components/footer') %>

@@ -1,4 +1,3 @@
-
 <head>
       
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -13,8 +12,15 @@
       <header>
         <a href="/"><div class="logo">MyStore</div></a>
         <div class="search-bar">
-          <input type="text" placeholder="Search for products...">
-          <button><i class="fas fa-search"></i></button>
+          <form action="/search" method="GET">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i>
+              <input type="text" name="term" placeholder="Search for products..." value="<%= searchTerm || '' %>">
+              <button type="submit" class="search-button">
+                <span>Search</span>
+              </button>
+            </div>
+          </form>
         </div>
 
         <nav>
@@ -30,18 +36,135 @@
         <div class="user-actions">
           <% if (session.user) { %>
             <p>Welcome, <%= session.user.username %>!</p>
+
+            <div class="order-history-container">
+              <a href="/order/myOrders" class="nav-link order-icon">
+                <i class="fas fa-box"></i>
+              </a>
+              <div class="order-dropdown">
+                <h4>Your Recent Orders</h4>
+                <ul id="order-list">
+                  <!-- Orders will be loaded here via JavaScript -->
+                  <li>No orders found.</li>
+                </ul>
+                <a href="/order/myOrders" class="view-all-orders">View All Orders</a>
+              </div>
+            </div>
+            <a href="/myCart" class="nav-link">
+              <i class="fas fa-shopping-cart"></i>
+              <span class="cart-count badge bg-danger" id="cart-count-badge">
+                <%= session.cart ? session.cart.totalItems : '0' %>
+              </span>
+            </a>
             <a href="/logout"> <button class="login-btn">Logout</button></a>
-          <div class="cart" onclick="window.location.href='/cart'">
-            <i class="fas fa-shopping-cart"></i>
-            <span class="cart-count">2</span>
-          </div>
+
           <% } else { %>
-          <a href="/login"> <button class="login-btn">Login</button></a>
-          <a href="/signup"> <button class="signup-btn">Sign Up</button></a>
+            <a href="/login"> <button class="login-btn">Login</button></a>
+            <a href="/signup"> <button class="signup-btn">Sign Up</button></a>
           <% } %>
-        
-
-          
-
         </div>
       </header>
+      <script>
+        // Function to update cart count
+        function updateCartCount(count) {
+          const cartCount = document.getElementById('cart-count-badge');
+          if (cartCount) {
+            cartCount.textContent = count;
+            cartCount.style.display = count > 0 ? 'inline' : 'none';
+          }
+        }
+
+        // Initialize cart count on page load
+        document.addEventListener('DOMContentLoaded', function() {
+          const cartCount = document.getElementById('cart-count-badge');
+          if (cartCount) {
+            const count = parseInt(cartCount.textContent) || 0;
+            updateCartCount(count);
+          }
+        });
+
+        // Order history dropdown functionality
+        document.addEventListener('DOMContentLoaded', function() {
+          const orderHistoryContainer = document.querySelector('.order-history-container');
+          const orderDropdown = document.querySelector('.order-dropdown');
+          const orderList = document.getElementById('order-list');
+
+          if (orderHistoryContainer && orderDropdown && orderList) {
+            let ordersLoaded = false;
+
+            orderHistoryContainer.addEventListener('mouseenter', async () => {
+              if (!ordersLoaded) {
+                try {
+                  const response = await fetch('/order/api/user-orders', {
+                    headers: {
+                      'Accept': 'application/json'
+                    }
+                  });
+                  const data = await response.json();
+
+                  if (response.ok && data.orders) {
+                    orderList.innerHTML = ''; // Clear existing content
+                    if (data.orders.length > 0) {
+                      data.orders.forEach(order => {
+                        const listItem = document.createElement('div');
+                        listItem.className = 'order-item';
+                        listItem.innerHTML = `
+                          <div class="order-header">
+                            <div class="order-id-status">
+                              <strong>Order #${order.orderId}</strong>
+                              <span class="order-status ${order.status.toLowerCase()}">${order.status}</span>
+                            </div>
+                            <div class="order-date">${order.date}</div>
+                          </div>
+                          <div class="order-items">
+                            ${order.items.map(item => `
+                              <div class="order-product">
+                                <img src="${item.imageUrl}" alt="${item.name}" class="product-thumbnail">
+                                <div class="product-details">
+                                  <span class="product-name">${item.name}</span>
+                                  <span class="product-quantity">x${item.quantity}</span>
+                                  <span class="product-price">$${item.price}</span>
+                                </div>
+                              </div>
+                            `).join('')}
+                          </div>
+                          <div class="order-summary">
+                            <div class="summary-row">
+                              <span>Items:</span>
+                              <span>${order.itemCount}</span>
+                            </div>
+                            <div class="summary-row">
+                              <span>Shipping:</span>
+                              <span>$${order.shippingCost}</span>
+                            </div>
+                            <div class="summary-row total">
+                              <span>Total:</span>
+                              <span>$${order.total}</span>
+                            </div>
+                            <div class="payment-method">
+                              <i class="fas fa-${order.paymentMethod === 'Cash' ? 'money-bill' : 'credit-card'}"></i>
+                              ${order.paymentMethod}
+                            </div>
+                          </div>
+                        `;
+                        orderList.appendChild(listItem);
+                      });
+                    } else {
+                      orderList.innerHTML = '<li>No recent orders found.</li>';
+                    }
+                    ordersLoaded = true;
+                  } else {
+                    orderList.innerHTML = `<li>Error: ${data.message || 'Failed to load orders.'}</li>`;
+                  }
+                } catch (error) {
+                  console.error('Error fetching orders:', error);
+                  orderList.innerHTML = '<li>Error loading orders. Please try again later.</li>';
+                }
+              }
+            });
+          }
+        });
+      </script>
+     
+      
+      </div>

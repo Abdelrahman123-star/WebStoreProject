@@ -1,0 +1,33 @@
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<!-- Back Button Component -->
+<style>
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.8rem 1.5rem;
+        background: var(--card-background, #ffffff);
+        border: none;
+        border-radius: 25px;
+        color: var(--text-color, #2d3436);
+        font-weight: 500;
+        cursor: pointer;
+        box-shadow: var(--shadow, 0 4px 6px rgba(0, 0, 0, 0.1));
+        transition: all 0.3s ease;
+        margin: 2rem auto;
+        display: block;
+    }
+
+    .back-button:hover {
+        transform: translateX(-5px);
+        background: var(--secondary-color, #ff5722);
+        color: white;
+    }
+</style>
+
+<button class="back-button" onclick="window.history.back()">
+    <i class="fas fa-arrow-left"></i>
+    Back
+</button> 

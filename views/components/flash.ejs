@@ -1,0 +1,12 @@
+<% let successMsg = null, errorMsg = null;
+if (messages && messages.success && messages.success.length > 0) successMsg = messages.success[0];
+if (success && success.length > 0) successMsg = success[0] || success;
+if (messages && messages.error && messages.error.length > 0) errorMsg = messages.error[0];
+if (error && error.length > 0) errorMsg = error[0] || error;
+%>
+<% if (successMsg) { %>
+<div class="alert alert-success" id="flash-success"><%= successMsg %></div>
+<% } %>
+<% if (errorMsg) { %>
+<div class="alert alert-danger" id="flash-error"><%= errorMsg %></div>
+<% } %>

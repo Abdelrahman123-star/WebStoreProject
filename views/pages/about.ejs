@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us - ShopEase</title>
+    <title data-i18n="aboutPage.title">About Us - ShopEase</title>
 <!-- dah btaa3 el icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <!-- w dah btaa3 el fonts-->
@@ -11,32 +11,414 @@
 
 <link rel="stylesheet" href="../css/aboutUs.css"> <!-- Link to your CSS file -->
 
+<!-- Add i18next and plugins from CDN -->
+<script src="https://unpkg.com/i18next/dist/umd/i18next.min.js"></script>
+<script src="https://unpkg.com/i18next-http-backend/i18nextHttpBackend.min.js"></script>
+<script src="https://unpkg.com/i18next-browser-languagedetector/i18nextBrowserLanguageDetector.min.js"></script>
+<script src="/js/i18n.js"></script>
+
+<style>
+    :root {
+        --primary-color: #2d3436;
+        --secondary-color: #ff5722;
+        --background-color: #f8f9fa;
+        --card-background: #ffffff;
+        --text-color: #2d3436;
+        --text-light: #636e72;
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+    }
+</style>
+
 <body>
       <%- include('../components/header') %>
-
-
+      <%- include('../components/backButton') %>
+      <%- include('../components/switchLanguage') %>
 
     <div class="about-container">
-        <h2>Welcome to <span class="highlight">OurShop!</span></h2>
-        <p>We’re not just another online store—we’re your *go-to* shopping destination! At *OurShop, we make sure you get the best products at the best prices, **without the hassle*.</p>
+        <h2><span data-i18n="aboutPage.welcome.title">Welcome to</span> <span class="highlight" data-i18n="aboutPage.welcome.highlight">OurShop!</span></h2>
+        <p data-i18n="aboutPage.welcome.description">We're not just another online store—we're your go-to shopping destination! At OurShop, we make sure you get the best products at the best prices, without the hassle.</p>
 
         <div class="why-choose-us">
             <div>
-                <h3>🔥 Best Deals</h3>
-                <p>prices that don't hurt your wallet!</p>
+                <h3 data-i18n="aboutPage.features.bestDeals.title">🔥 Best Deals</h3>
+                <p data-i18n="aboutPage.features.bestDeals.description">prices that don't hurt your wallet!</p>
             </div>
             <div>
-                <h3>🚀 Fast Delivery</h3>
-                <p>Quick, reliable, and safe shipping at your doorstep.</p>
+                <h3 data-i18n="aboutPage.features.fastDelivery.title">🚀 Fast Delivery</h3>
+                <p data-i18n="aboutPage.features.fastDelivery.description">Quick, reliable, and safe shipping at your doorstep.</p>
             </div>
             <div>
-                <h3>🛎️ 24/7 Support</h3>
-                <p>Got a question? We’re here for you anytime!</p>
+                <h3 data-i18n="aboutPage.features.support.title">🛎️ 24/7 Support</h3>
+                <p data-i18n="aboutPage.features.support.description">Got a question? We're here for you anytime!</p>
             </div>
         </div>
 
-        <p>Founded in *2023, we started with a simple idea: **make online shopping fun and stress-free*. Now, we’re proud to serve thousands of happy customers worldwide. 🎉</p>
+        <p data-i18n="aboutPage.history">Founded in 2023, we started with a simple idea: make online shopping fun and stress-free. Now, we're proud to serve thousands of happy customers worldwide. 🎉</p>
     </div>
+
+
+
+
+
+
+
+    <section class="parallax-section">
+        <div class="parallax-content">
+          <div class="parallax-layer" data-speed="0.2">
+            <div class="floating-card">
+              <div class="card-icon">
+                <div class="icon-bg"></div>
+                <i class="fas fa-truck"></i>
+              </div>
+              <div class="card-content">
+                <h3 data-i18n="aboutPage.cards.fastDelivery.title">Fast Delivery</h3>
+                <p data-i18n="aboutPage.cards.fastDelivery.description">Free shipping on orders over 200LE</p>
+                <a href="/shipping" class="card-link">
+                  <span data-i18n="aboutPage.cards.fastDelivery.link">Learn More</span>
+                  <div class="link-arrow">
+                    <i class="fas fa-arrow-right"></i>
+                  </div>
+                </a>
+              </div>
+              <div class="card-shine"></div>
+            </div>
+          </div>
+          <div class="parallax-layer" data-speed="0.4">
+            <div class="floating-card">
+              <div class="card-icon">
+                <div class="icon-bg"></div>
+                <i class="fas fa-shield-alt"></i>
+              </div>
+              <div class="card-content">
+                <h3 data-i18n="aboutPage.cards.secureShopping.title">Secure Shopping</h3>
+                <p data-i18n="aboutPage.cards.secureShopping.description">100% secure payment</p>
+                <a href="/security" class="card-link">
+                  <span data-i18n="aboutPage.cards.secureShopping.link">Learn More</span>
+                  <div class="link-arrow">
+                    <i class="fas fa-arrow-right"></i>
+                  </div>
+                </a>
+              </div>
+              <div class="card-shine"></div>
+            </div>
+          </div>
+          <div class="parallax-layer" data-speed="0.6">
+            <div class="floating-card">
+              <div class="card-icon">
+                <div class="icon-bg"></div>
+                <i class="fas fa-headset"></i>
+              </div>
+              <div class="card-content">
+                <h3 data-i18n="aboutPage.cards.support.title">24/7 Support</h3>
+                <p data-i18n="aboutPage.cards.support.description">Always here to help</p>
+                <a href="/support" class="card-link">
+                  <span data-i18n="aboutPage.cards.support.link">Learn More</span>
+                  <div class="link-arrow">
+                    <i class="fas fa-arrow-right"></i>
+                  </div>
+                </a>
+              </div>
+              <div class="card-shine"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <style>
+      .parallax-section {
+        min-height: 700px;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        margin: 6rem 0;
+        padding: 6rem 0;
+      }
+      
+      .parallax-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+          radial-gradient(circle at 20% 20%, rgba(255, 87, 34, 0.15) 0%, transparent 50%),
+          radial-gradient(circle at 80% 80%, rgba(255, 87, 34, 0.15) 0%, transparent 50%);
+        opacity: 0.7;
+        animation: gradientShift 10s ease infinite;
+      }
+      
+      @keyframes gradientShift {
+        0%, 100% {
+          background-position: 0% 0%;
+        }
+        50% {
+          background-position: 100% 100%;
+        }
+      }
+      
+      .parallax-content {
+        position: relative;
+        height: 100%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 0 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+        gap: 2rem;
+      }
+      
+      .parallax-layer {
+        position: relative;
+        z-index: 1;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      .floating-card {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 3rem;
+        border-radius: 24px;
+        box-shadow: 
+          0 10px 30px rgba(0, 0, 0, 0.3),
+          0 1px 3px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 320px;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        overflow: hidden;
+      }
+      
+      .card-shine {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          45deg,
+          transparent 0%,
+          rgba(255, 255, 255, 0.1) 45%,
+          rgba(255, 255, 255, 0.2) 50%,
+          rgba(255, 255, 255, 0.1) 55%,
+          transparent 100%
+        );
+        transform: translateX(-100%);
+        transition: transform 0.6s;
+      }
+      
+      .floating-card:hover .card-shine {
+        transform: translateX(100%);
+      }
+      
+      .floating-card:hover {
+        transform: translateY(-20px) scale(1.02);
+        box-shadow: 
+          0 20px 40px rgba(0, 0, 0, 0.4),
+          0 1px 3px rgba(0, 0, 0, 0.1);
+        background: rgba(255, 255, 255, 0.08);
+      }
+      
+      .card-icon {
+        width: 90px;
+        height: 90px;
+        margin: 0 auto 2rem;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s ease;
+      }
+      
+      .icon-bg {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #ff5722, #ff7043);
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+      }
+      
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.1);
+          opacity: 0.8;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      
+      .floating-card:hover .card-icon {
+        transform: scale(1.1) rotate(5deg);
+      }
+      
+      .card-icon i {
+        font-size: 2.5rem;
+        color: white;
+        position: relative;
+        z-index: 1;
+      }
+      
+      .card-content {
+        position: relative;
+        z-index: 1;
+      }
+      
+      .card-content h3 {
+        color: #ffffff;
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+      
+      .card-content p {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+      }
+      
+      .card-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #ff5722;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        padding: 0.8rem 1.5rem;
+        border-radius: 25px;
+        background: rgba(255, 87, 34, 0.1);
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .link-arrow {
+        transition: transform 0.3s ease;
+      }
+      
+      .card-link:hover {
+        color: #ffffff;
+        background: rgba(255, 87, 34, 0.2);
+        transform: translateY(-2px);
+      }
+      
+      .card-link:hover .link-arrow {
+        transform: translateX(5px);
+      }
+      
+      @media (max-width: 1024px) {
+        .parallax-content {
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+        
+        .floating-card {
+          width: 300px;
+        }
+      }
+      
+      @media (max-width: 768px) {
+        .parallax-section {
+          min-height: auto;
+          padding: 4rem 0;
+        }
+        
+        .parallax-content {
+          flex-direction: column;
+          gap: 2rem;
+        }
+        
+        .floating-card {
+          width: 90%;
+          max-width: 320px;
+          padding: 2rem;
+        }
+      }
+      </style>
+      
+      <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.floating-card');
+        const section = document.querySelector('.parallax-section');
+        let lastScrollY = window.scrollY;
+        let ticking = false;
+      
+        function handleScroll() {
+          const rect = section.getBoundingClientRect();
+          const scrollPercent = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
+          
+          if (scrollPercent > 0 && scrollPercent < 1) {
+            cards.forEach((card, index) => {
+              const offset = (index - 1) * 30;
+              const translateY = Math.sin(scrollPercent * Math.PI) * 50 + offset;
+              const rotate = Math.sin(scrollPercent * Math.PI) * 3;
+              const scale = 1 + Math.sin(scrollPercent * Math.PI) * 0.02;
+              card.style.transform = `perspective(1000px) translateY(${translateY}px) rotate(${rotate}deg) scale(${scale})`;
+            });
+          }
+          ticking = false;
+        }
+      
+        window.addEventListener('scroll', function() {
+          if (!ticking) {
+            window.requestAnimationFrame(handleScroll);
+            ticking = true;
+          }
+        });
+      
+        // Enhanced mouse move effect
+        section.addEventListener('mousemove', function(e) {
+          const rect = section.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          
+          cards.forEach((card, index) => {
+            const cardRect = card.getBoundingClientRect();
+            const cardX = cardRect.left + cardRect.width / 2 - rect.left;
+            const cardY = cardRect.top + cardRect.height / 2 - rect.top;
+            
+            const deltaX = (x - cardX) * 0.02;
+            const deltaY = (y - cardY) * 0.02;
+            const rotateX = (y - cardY) * 0.02;
+            const rotateY = (x - cardX) * -0.02;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translate(${deltaX}px, ${deltaY}px)`;
+          });
+        });
+      
+        section.addEventListener('mouseleave', function() {
+          cards.forEach(card => {
+            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translate(0, 0)';
+          });
+        });
+      
+        // Add floating animation to cards
+        cards.forEach((card, index) => {
+          card.style.animation = `float ${3 + index * 0.5}s infinite ease-in-out`;
+        });
+      
+        handleScroll(); // Initial position
+      });
+      </script>
+
+
+
+
+
+
+
+
+
 
 <!-- Footer -->
           <%- include('../components/footer') %>

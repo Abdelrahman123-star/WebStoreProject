@@ -1,73 +1,74 @@
 <%- include('../adminComponents/head') %>
 <%- include('../adminComponents/header') %>
 <%- include('../adminComponents/slideBar') %>
+<%- include('../adminComponents/switchLanguage') %>
 <link rel="stylesheet" href="/css/adminHomePage.css">
 <link rel="stylesheet" href="/css/admin/discounts.css">
 
 <div class="main-content">
   <div class="header">
-    <h1>Create New Discount</h1>
+    <h1 data-i18n="adminDiscounts.createTitle">Create New Discount</h1>
     <a href="/admin/discounts" class="btn btn-secondary">
-      <i class="fas fa-arrow-left"></i> Back to Discounts
+      <i class="fas fa-arrow-left"></i> <span data-i18n="adminDiscounts.backToDiscounts">Back to Discounts</span>
     </a>
   </div>
 
   <div class="form-container">
     <form action="/admin/discounts/create" method="POST" class="discount-form">
       <div class="form-section">
-        <h2>Basic Information</h2>
+        <h2 data-i18n="adminDiscounts.basicInfo">Basic Information</h2>
         
         <div class="form-group">
-          <label for="name">Discount Name</label>
+          <label for="name" data-i18n="adminDiscounts.discountName">Discount Name</label>
           <input type="text" id="name" name="name" required>
         </div>
 
         <div class="form-group">
-          <label for="description">Description</label>
+          <label for="description" data-i18n="adminDiscounts.description">Description</label>
           <textarea id="description" name="description" rows="3"></textarea>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label for="type">Discount Type</label>
+            <label for="type" data-i18n="adminDiscounts.discountType">Discount Type</label>
             <select id="type" name="type" required>
-              <option value="percentage">Percentage</option>
-              <option value="fixed">Fixed Amount</option>
+              <option value="percentage" data-i18n="adminDiscounts.percentage">Percentage</option>
+              <option value="fixed" data-i18n="adminDiscounts.fixedAmount">Fixed Amount</option>
             </select>
           </div>
 
           <div class="form-group">
-            <label for="value">Value</label>
+            <label for="value" data-i18n="adminDiscounts.value">Value</label>
             <input type="number" id="value" name="value" min="0" step="0.01" required>
-            <span class="value-hint">Enter percentage or amount in LE</span>
+            <span class="value-hint" data-i18n="adminDiscounts.valueHint">Enter percentage or amount in LE</span>
           </div>
         </div>
       </div>
 
       <div class="form-section">
-        <h2>Time Period</h2>
+        <h2 data-i18n="adminDiscounts.timePeriod">Time Period</h2>
         
         <div class="form-row">
           <div class="form-group">
-            <label for="startDate">Start Date</label>
+            <label for="startDate" data-i18n="adminDiscounts.startDate">Start Date</label>
             <input type="datetime-local" id="startDate" name="startDate" required>
           </div>
 
           <div class="form-group">
-            <label for="endDate">End Date</label>
+            <label for="endDate" data-i18n="adminDiscounts.endDate">End Date</label>
             <input type="datetime-local" id="endDate" name="endDate" required>
           </div>
         </div>
       </div>
 
       <div class="form-section">
-        <h2>Scope</h2>
+        <h2 data-i18n="adminDiscounts.scope">Scope</h2>
         
         <div class="form-group">
-          <label>Products</label>
+          <label data-i18n="adminDiscounts.products">Products</label>
           <div class="tag-input-container" id="productTagInputContainer">
             <div class="selected-tags" id="selectedProductsTags"></div>
-            <input type="text" class="tag-search-input" id="productSearchInput" placeholder="Search products..." autocomplete="off">
+            <input type="text" class="tag-search-input" id="productSearchInput" data-i18n-placeholder="adminDiscounts.searchProducts" placeholder="Search products..." autocomplete="off">
             <div class="tag-options-dropdown" id="productOptionsDropdown">
               <!-- Options populated by JavaScript -->
             </div>
@@ -80,14 +81,14 @@
               <% }) %>
             </select>
           </div>
-          <span class="select-hint">Type to search and select products.</span>
+          <span class="select-hint" data-i18n="adminDiscounts.searchProductsHint">Type to search and select products.</span>
         </div>
 
         <div class="form-group">
-          <label>Categories</label>
+          <label data-i18n="adminDiscounts.categories">Categories</label>
           <div class="tag-input-container" id="categoryTagInputContainer">
             <div class="selected-tags" id="selectedCategoriesTags"></div>
-            <input type="text" class="tag-search-input" id="categorySearchInput" placeholder="Search categories..." autocomplete="off">
+            <input type="text" class="tag-search-input" id="categorySearchInput" data-i18n-placeholder="adminDiscounts.searchCategories" placeholder="Search categories..." autocomplete="off">
             <div class="tag-options-dropdown" id="categoryOptionsDropdown">
               <!-- Options populated by JavaScript -->
             </div>
@@ -98,15 +99,15 @@
               <% }) %>
             </select>
           </div>
-          <span class="select-hint">Type to search and select categories.</span>
+          <span class="select-hint" data-i18n="adminDiscounts.searchCategoriesHint">Type to search and select categories.</span>
         </div>
       </div>
 
       <div class="form-actions">
         <button type="submit" class="btn btn-primary">
-          <i class="fas fa-save"></i> Create Discount
+          <i class="fas fa-save"></i> <span data-i18n="adminDiscounts.createDiscount">Create Discount</span>
         </button>
-        <a href="/admin/discounts" class="btn btn-secondary">Cancel</a>
+        <a href="/admin/discounts" class="btn btn-secondary" data-i18n="adminDiscounts.cancel">Cancel</a>
       </div>
     </form>
   </div>
@@ -120,6 +121,12 @@
   <%- JSON.stringify(categories) %>
 </script>
 
+<!-- Add i18next and plugins from CDN -->
+<script src="https://unpkg.com/i18next/dist/umd/i18next.min.js"></script>
+<script src="https://unpkg.com/i18next-http-backend/i18nextHttpBackend.min.js"></script>
+<script src="https://unpkg.com/i18next-browser-languagedetector/i18nextBrowserLanguageDetector.min.js"></script>
+<script src="/js/i18n.js"></script>
+
 <script>
   const allProductsData = JSON.parse(document.getElementById('productsData').textContent);
   const allCategoriesData = JSON.parse(document.getElementById('categoriesData').textContent);
@@ -132,11 +139,12 @@ document.addEventListener('DOMContentLoaded', function() {
   typeSelect.addEventListener('change', function() {
     if (this.value === 'percentage') {
       valueInput.max = '100';
-      valueHint.textContent = 'Enter percentage (0-100)';
+      valueHint.setAttribute('data-i18n', 'adminDiscounts.percentageHint');
     } else {
       valueInput.removeAttribute('max');
-      valueHint.textContent = 'Enter amount in LE';
+      valueHint.setAttribute('data-i18n', 'adminDiscounts.fixedAmountHint');
     }
+    i18next.changeLanguage(i18next.language); // Refresh translations
   });
 
   // Set minimum dates for start and end date inputs
@@ -151,6 +159,15 @@ document.addEventListener('DOMContentLoaded', function() {
     endDateInput.min = this.value;
   });
 
+  // Initialize value hint based on current type
+  if (typeSelect.value === 'percentage') {
+    valueInput.max = '100';
+    valueHint.setAttribute('data-i18n', 'adminDiscounts.percentageHint');
+  } else {
+    valueInput.removeAttribute('max');
+    valueHint.setAttribute('data-i18n', 'adminDiscounts.fixedAmountHint');
+  }
+
   // New Tag Input Logic
   function setupTagInput(containerId, searchInputId, tagsContainerId, optionsDropdownId, hiddenSelectId, allItems) {
     const container = document.getElementById(containerId);
@@ -158,8 +175,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const tagsContainer = document.getElementById(tagsContainerId);
     const optionsDropdown = document.getElementById(optionsDropdownId);
     const hiddenSelect = document.getElementById(hiddenSelectId);
-
-    // Populate initial selected tags (none for create form)
 
     function renderOptions(filter = '') {
       optionsDropdown.innerHTML = '';
@@ -169,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
       );
 
       if (filteredItems.length === 0 && filter !== '') {
-        optionsDropdown.innerHTML = '<div class="tag-option-item no-results">No results found</div>';
+        optionsDropdown.innerHTML = '<div class="tag-option-item no-results" data-i18n="adminDiscounts.noResults">No results found</div>';
         optionsDropdown.style.display = 'block';
         return;
       }

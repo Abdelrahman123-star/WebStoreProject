@@ -1,15 +1,16 @@
 <%- include('../adminComponents/head') %>
 <%- include('../adminComponents/header') %>
 <%- include('../adminComponents/slideBar') %>
+<%- include('../adminComponents/switchLanguage') %>
 
 <div class="main-content">
     <div class="header">
         <div class="header-content">
             <a href="/admin/carts" class="back-button">
                 <i class="fas fa-arrow-left"></i>
-                Back to Carts
+                <span data-i18n="adminCarts.backToCarts">Back to Carts</span>
             </a>
-            <h1>Cart Details</h1>
+            <h1 data-i18n="adminCarts.cartDetails">Cart Details</h1>
         </div>
     </div>
 
@@ -17,54 +18,54 @@
         <% if (cart) { %>
             <div class="cart-detail-container">
                 <div class="detail-section cart-summary-card">
-                    <h2><i class="fas fa-info-circle"></i> Cart Overview</h2>
+                    <h2><i class="fas fa-info-circle"></i> <span data-i18n="adminCarts.cartOverview">Cart Overview</span></h2>
                     <div class="info-row">
-                        <span class="label">Cart ID:</span>
+                        <span class="label" data-i18n="adminCarts.cartId">Cart ID:</span>
                         <span class="value"><%= cart._id %></span>
                     </div>
                     <div class="info-row">
-                        <span class="label">Created:</span>
+                        <span class="label" data-i18n="adminCarts.created">Created:</span>
                         <span class="value"><%= new Date(cart.createdAt).toLocaleString() %></span>
                     </div>
                     <div class="info-row">
-                        <span class="label">Last Updated:</span>
+                        <span class="label" data-i18n="adminCarts.lastUpdated">Last Updated:</span>
                         <span class="value"><%= new Date(cart.updatedAt).toLocaleString() %></span>
                     </div>
                     <div class="info-row total-row">
-                        <span class="label">Total Items:</span>
+                        <span class="label" data-i18n="adminCarts.totalItems">Total Items:</span>
                         <span class="value"><%= cart.totalItems %></span>
                     </div>
                     <div class="info-row total-row">
-                        <span class="label">Total Amount:</span>
+                        <span class="label" data-i18n="adminCarts.totalAmount">Total Amount:</span>
                         <span class="value total-amount">EGP <%= cart.totalAmount.toFixed(2) %></span>
                     </div>
                 </div>
 
                 <div class="detail-section user-info-card">
-                    <h2><i class="fas fa-user"></i> User Information</h2>
+                    <h2><i class="fas fa-user"></i> <span data-i18n="adminCarts.userInfo">User Information</span></h2>
                     <% if (cart.user) { %>
                         <div class="info-row">
-                            <span class="label">User ID:</span>
+                            <span class="label" data-i18n="adminCarts.userId">User ID:</span>
                             <span class="value"><%= cart.user._id %></span>
                         </div>
                         <div class="info-row">
-                            <span class="label">Username:</span>
+                            <span class="label" data-i18n="adminCarts.username">Username:</span>
                             <span class="value"><%= cart.user.username %></span>
                         </div>
                         <div class="info-row">
-                            <span class="label">Email:</span>
+                            <span class="label" data-i18n="adminCarts.email">Email:</span>
                             <span class="value"><%= cart.user.email %></span>
                         </div>
                     <% } else { %>
                         <div class="info-row">
-                            <span class="label">User:</span>
-                            <span class="value">Unknown User</span>
+                            <span class="label" data-i18n="adminCarts.user">User:</span>
+                            <span class="value" data-i18n="adminCarts.unknownUser">Unknown User</span>
                         </div>
                     <% } %>
                 </div>
 
                 <div class="detail-section cart-items-card">
-                    <h2><i class="fas fa-shopping-basket"></i> Cart Items</h2>
+                    <h2><i class="fas fa-shopping-basket"></i> <span data-i18n="adminCarts.cartItems">Cart Items</span></h2>
                     <% if (cart.items && cart.items.length > 0) { %>
                         <div class="items-list">
                             <% cart.items.forEach(item => { %>
@@ -75,14 +76,14 @@
                                     <div class="item-details">
                                         <h3 class="item-name"><%= item.product.name %></h3>
                                         <% if (item.discountPercentage > 0) { %>
-                                            <p class="item-price original-price">Price: EGP <s><%= item.originalPrice.toFixed(2) %></s></p>
-                                            <p class="item-price discounted-price">Discounted: EGP <%= item.currentPrice.toFixed(2) %></p>
-                                            <span class="item-discount-badge"><%= item.discountPercentage %>% OFF</span>
+                                            <p class="item-price original-price"><span data-i18n="adminCarts.price">Price:</span> EGP <s><%= item.originalPrice.toFixed(2) %></s></p>
+                                            <p class="item-price discounted-price"><span data-i18n="adminCarts.discounted">Discounted:</span> EGP <%= item.currentPrice.toFixed(2) %></p>
+                                            <span class="item-discount-badge"><%= item.discountPercentage %>% <span data-i18n="adminCarts.off">OFF</span></span>
                                         <% } else { %>
-                                            <p class="item-price">Price: EGP <%= item.currentPrice.toFixed(2) %></p>
+                                            <p class="item-price"><span data-i18n="adminCarts.price">Price:</span> EGP <%= item.currentPrice.toFixed(2) %></p>
                                         <% } %>
-                                        <p class="item-quantity">Quantity: <%= item.quantity %></p>
-                                        <p class="item-subtotal">Subtotal: EGP <%= (item.currentPrice * item.quantity).toFixed(2) %></p>
+                                        <p class="item-quantity"><span data-i18n="adminCarts.quantity">Quantity:</span> <%= item.quantity %></p>
+                                        <p class="item-subtotal"><span data-i18n="adminCarts.subtotal">Subtotal:</span> EGP <%= (item.currentPrice * item.quantity).toFixed(2) %></p>
                                     </div>
                                 </div>
                             <% }); %>
@@ -90,7 +91,7 @@
                     <% } else { %>
                         <div class="empty-state">
                             <i class="fas fa-box-open"></i>
-                            <p>This cart is empty.</p>
+                            <p data-i18n="adminCarts.emptyCart">This cart is empty.</p>
                         </div>
                     <% } %>
                 </div>
@@ -99,7 +100,7 @@
                     <% if (cart._id) { %>
                     <button class="btn-delete" onclick="deleteCart('<%= cart._id %>')">
                         <i class="fas fa-trash-alt"></i>
-                        Delete This Cart
+                        <span data-i18n="adminCarts.deleteThisCart">Delete This Cart</span>
                     </button>
                     <% } %>
                 </div>
@@ -107,22 +108,28 @@
         <% } else { %>
             <div class="error-message-card">
                 <i class="fas fa-exclamation-circle"></i>
-                <h2>Cart Not Found</h2>
-                <p>The requested cart could not be found or does not exist.</p>
-                <a href="/admin/carts" class="btn-back-main">Back to Carts List</a>
+                <h2 data-i18n="adminCarts.cartNotFound">Cart Not Found</h2>
+                <p data-i18n="adminCarts.cartNotFoundMessage">The requested cart could not be found or does not exist.</p>
+                <a href="/admin/carts" class="btn-back-main" data-i18n="adminCarts.backToCartsList">Back to Carts List</a>
             </div>
         <% } %>
     </div>
 </div>
 
+<!-- Add i18next and plugins from CDN -->
+<script src="https://unpkg.com/i18next/dist/umd/i18next.min.js"></script>
+<script src="https://unpkg.com/i18next-http-backend/i18nextHttpBackend.min.js"></script>
+<script src="https://unpkg.com/i18next-browser-languagedetector/i18nextBrowserLanguageDetector.min.js"></script>
+<script src="/js/i18n.js"></script>
+
 <script>
 async function deleteCart(cartId) {
     if (!cartId) {
-        alert('Invalid cart ID');
+        alert(i18next.t('adminCarts.invalidCartId'));
         return;
     }
 
-    if (!confirm('Are you sure you want to delete this cart? This action cannot be undone.')) {
+    if (!confirm(i18next.t('adminCarts.deleteConfirmMessage'))) {
         return;
     }
 
@@ -139,11 +146,11 @@ async function deleteCart(cartId) {
         if (data.success) {
             window.location.href = '/admin/carts';
         } else {
-            alert(data.error || 'Failed to delete cart');
+            alert(data.error || i18next.t('adminCarts.deleteError'));
         }
     } catch (error) {
         console.error('Error:', error);
-        alert('Failed to delete cart');
+        alert(i18next.t('adminCarts.deleteError'));
     }
 }
 </script>

@@ -1,0 +1,290 @@
+<%- include('../components/header') %>
+
+<div class="orders-container">
+    <div class="orders-header">
+        <h1>My Orders</h1>
+        <p>View and track all your orders</p>
+    </div>
+
+    <% if (orders && orders.length > 0) { %>
+        <div class="orders-grid">
+            <% orders.forEach(order => { %>
+                <div class="order-card">
+                    <div class="order-card-header">
+                        <div class="order-info">
+                            <h3>Order #<%= order._id.toString().substring(0, 8) %>...</h3>
+                            <span class="order-date"><%= new Date(order.orderDate).toLocaleDateString() %></span>
+                        </div>
+                        <div class="order-status <%= order.orderStatus.toLowerCase() %>">
+                            <%= order.orderStatus %>
+                        </div>
+                    </div>
+
+                    <div class="order-items">
+                        <% order.items.forEach(item => { %>
+                            <div class="order-item">
+                                <img src="<%= item.imageUrl %>" alt="<%= item.name %>" class="item-image">
+                                <div class="item-details">
+                                    <h4><%= item.name %></h4>
+                                    <p>Quantity: <%= item.quantity %></p>
+                                    <p class="item-price">$<%= item.priceAtPurchase.toFixed(2) %></p>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+
+                    <div class="order-summary">
+                        <div class="summary-row">
+                            <span>Items Total:</span>
+                            <span>$<%= order.totalAmount.toFixed(2) %></span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Shipping:</span>
+                            <span>$<%= order.shippingCost ? order.shippingCost.toFixed(2) : '0.00' %></span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total:</span>
+                            <span>$<%= order.finalTotal.toFixed(2) %></span>
+                        </div>
+                        <div class="payment-info">
+                            <i class="fas fa-<%= order.paymentMethod === 'Cash' ? 'money-bill' : 'credit-card' %>"></i>
+                            <%= order.paymentMethod %>
+                        </div>
+                    </div>
+
+                    <a href="/order/confirmation/<%= order._id %>" class="view-order-btn">
+                        View Details
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            <% }); %>
+        </div>
+    <% } else { %>
+        <div class="no-orders">
+            <i class="fas fa-shopping-bag"></i>
+            <h2>No Orders Yet</h2>
+            <p>You haven't placed any orders yet.</p>
+            <a href="/" class="shop-now-btn">Start Shopping</a>
+        </div>
+    <% } %>
+</div>
+
+<style>
+    .orders-container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    .orders-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .orders-header h1 {
+        color: #333;
+        font-size: 32px;
+        margin-bottom: 10px;
+    }
+
+    .orders-header p {
+        color: #666;
+        font-size: 16px;
+    }
+
+    .orders-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 30px;
+    }
+
+    .order-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+
+    .order-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .order-card-header {
+        padding: 20px;
+        background: #f8f9fa;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .order-info h3 {
+        margin: 0;
+        font-size: 18px;
+        color: #333;
+    }
+
+    .order-date {
+        font-size: 14px;
+        color: #666;
+    }
+
+    .order-status {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .order-status.pending {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+
+    .order-status.completed {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .order-status.cancelled {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+    .order-items {
+        padding: 20px;
+    }
+
+    .order-item {
+        display: flex;
+        gap: 15px;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .order-item:last-child {
+        border-bottom: none;
+    }
+
+    .item-image {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .item-details h4 {
+        margin: 0 0 5px 0;
+        font-size: 16px;
+        color: #333;
+    }
+
+    .item-details p {
+        margin: 0;
+        font-size: 14px;
+        color: #666;
+    }
+
+    .item-price {
+        color: #ff5722 !important;
+        font-weight: 500;
+    }
+
+    .order-summary {
+        padding: 20px;
+        background: #f8f9fa;
+        border-top: 1px solid #eee;
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        font-size: 14px;
+        color: #666;
+    }
+
+    .summary-row.total {
+        font-weight: 600;
+        color: #333;
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px dashed #ddd;
+    }
+
+    .payment-info {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 12px;
+        font-size: 14px;
+        color: #666;
+    }
+
+    .payment-info i {
+        color: #ff5722;
+    }
+
+    .view-order-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px;
+        background: #ff5722;
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        transition: background-color 0.3s ease;
+    }
+
+    .view-order-btn:hover {
+        background: #e64a19;
+    }
+
+    .no-orders {
+        text-align: center;
+        padding: 60px 20px;
+    }
+
+    .no-orders i {
+        font-size: 48px;
+        color: #ddd;
+        margin-bottom: 20px;
+    }
+
+    .no-orders h2 {
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .no-orders p {
+        color: #666;
+        margin-bottom: 20px;
+    }
+
+    .shop-now-btn {
+        display: inline-block;
+        padding: 12px 24px;
+        background: #ff5722;
+        color: white;
+        text-decoration: none;
+        border-radius: 25px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .shop-now-btn:hover {
+        background: #e64a19;
+        transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+        .orders-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<%- include('../components/footer') %> 

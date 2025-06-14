@@ -3,13 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shop by Category - MyStore</title>
+  <title data-i18n="categoryPage.title">Shop by Category - MyStore</title>
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <!-- Link to your CSS file -->
   <link rel="stylesheet" href="../css/category.css">
+
+  <!-- Add i18next and plugins from CDN -->
+  <script src="https://unpkg.com/i18next/dist/umd/i18next.min.js"></script>
+  <script src="https://unpkg.com/i18next-http-backend/i18nextHttpBackend.min.js"></script>
+  <script src="https://unpkg.com/i18next-browser-languagedetector/i18nextBrowserLanguageDetector.min.js"></script>
+  <script src="/js/i18n.js"></script>
+
   <style>
     :root {
       --primary-color: #2d3436;
@@ -235,10 +242,9 @@
   <!-- Header -->
   <%- include('../components/header') %>
   <%- include('../components/backButton') %>
+  <%- include('../components/switchLanguage') %>
 
   <main class="category-container">
-
-
     <section class="category-grid">
       <% if (categories && categories.length > 0) { %>
         <% categories.forEach(category => { %>
@@ -251,22 +257,20 @@
               <% } %>
 
               <div class="category-actions">
-                <button class="action-button" title="Quick View">
+                <button class="action-button" title="Quick View" data-i18n-title="categoryPage.categoryCard.quickView">
                   <i class="fas fa-eye"></i>
                 </button>
-
               </div>
             </div>
             <div class="category-info">
               <h3><%= category.name %></h3>
-              <p class="category-description"><%= category.description || 'Explore our products' %></p>
+              <p class="category-description" data-i18n="categoryPage.categoryCard.explore"><%= category.description || 'Explore our products' %></p>
 
               <div class="category-stats">
                 <div class="stat-item">
                   <i class="fas fa-box"></i>
-                  <span><%= category.productCount || 0 %> Products</span>
+                  <span><%= category.productCount || 0 %> <span data-i18n="categoryPage.categoryCard.products">Products</span></span>
                 </div>
-
               </div>
             </div>
           </div>
@@ -274,8 +278,8 @@
       <% } else { %>
         <div class="no-categories">
           <i class="fas fa-folder-open"></i>
-          <h3>No Categories Found</h3>
-          <p>There are no categories available at the moment.</p>
+          <h3 data-i18n="categoryPage.noCategories.title">No Categories Found</h3>
+          <p data-i18n="categoryPage.noCategories.description">There are no categories available at the moment.</p>
         </div>
       <% } %>
     </section>

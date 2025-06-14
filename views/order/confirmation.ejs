@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation - MyStore</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #2196F3;
+            --success-color: #4CAF50;
+            --error-color: #f44336;
+            --text-color: #333;
+            --light-gray: #f5f5f5;
+            --border-color: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: var(--text-color);
+        }
+
+        .confirmation-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .success-animation, .pending-animation, .processing-animation, .shipped-animation, .delivered-animation, .cancelled-animation {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .success-icon, .pending-icon, .processing-icon, .shipped-icon, .delivered-icon, .cancelled-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2.5rem;
+        }
+
+        .success-icon {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .pending-icon {
+            background-color: #FFA500;
+            color: white;
+        }
+
+        .processing-icon {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .shipped-icon {
+            background-color: #9C27B0;
+            color: white;
+        }
+
+        .delivered-icon {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .cancelled-icon {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .success-message, .pending-message, .processing-message, .shipped-message, .delivered-message, .cancelled-message {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .success-message { color: #4CAF50; }
+        .pending-message { color: #FFA500; }
+        .processing-message { color: #2196F3; }
+        .shipped-message { color: #9C27B0; }
+        .delivered-message { color: #4CAF50; }
+        .cancelled-message { color: #f44336; }
+
+        .order-number {
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .order-details {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        .order-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .order-status {
+            background-color: var(--success-color);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .items-list {
+            margin-bottom: 30px;
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.3s ease;
+        }
+
+        .item:hover {
+            background-color: var(--light-gray);
+        }
+
+        .item-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-right: 20px;
+        }
+
+        .item-details {
+            flex-grow: 1;
+        }
+
+        .item-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .item-quantity {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .item-price {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .order-summary {
+            background-color: var(--light-gray);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .summary-row:last-child {
+            margin-bottom: 0;
+            padding-top: 15px;
+            border-top: 2px solid var(--border-color);
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .free-shipping {
+            color: var(--success-color);
+            font-weight: 500;
+        }
+
+        .next-steps {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .next-steps h3 {
+            margin-top: 0;
+            color: var(--text-color);
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .steps-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: var(--light-gray);
+            border-radius: 8px;
+        }
+
+        .step i {
+            color: var(--secondary-color);
+            font-size: 20px;
+            margin-right: 15px;
+        }
+
+        .step-text {
+            font-size: 14px;
+            color: #666;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .fa-spin {
+            animation: spin 2s linear infinite;
+        }
+
+        @media (max-width: 768px) {
+            .confirmation-container {
+                margin: 20px auto;
+                padding: 10px;
+            }
+
+            .order-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .item-image {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            .item-details {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include('../components/header') %>
+
+    <div class="confirmation-container">
+        <div class="<%= order.orderStatus.toLowerCase() %>-animation">
+            <div class="<%= order.orderStatus.toLowerCase() %>-icon">
+                <% if (order.orderStatus === 'Pending') { %>
+                    <i class="fas fa-clock"></i>
+                <% } else if (order.orderStatus === 'Processing') { %>
+                    <i class="fas fa-cog fa-spin"></i>
+                <% } else if (order.orderStatus === 'Shipped') { %>
+                    <i class="fas fa-truck"></i>
+                <% } else if (order.orderStatus === 'Delivered') { %>
+                    <i class="fas fa-check"></i>
+                <% } else if (order.orderStatus === 'Cancelled') { %>
+                    <i class="fas fa-times"></i>
+                <% } %>
+            </div>
+            <div class="<%= order.orderStatus.toLowerCase() %>-message">Order <%= order.orderStatus %>!</div>
+            <div class="order-number">Order #<%= order._id.toString().substring(0, 8) %></div>
+        </div>
+
+        <div class="order-details">
+            <div class="order-header">
+                <div class="order-title">Order Details</div>
+                <div class="order-status"><%= order.orderStatus %></div>
+            </div>
+
+            <div class="items-list">
+                <% order.items.forEach(item => { %>
+                    <div class="item">
+                        <img src="<%= item.imageUrl %>" alt="<%= item.name %>" class="item-image">
+                        <div class="item-details">
+                            <div class="item-name"><%= item.name %></div>
+                            <div class="item-quantity">Quantity: <%= item.quantity %></div>
+                        </div>
+                        <div class="item-price">$<%= (item.priceAtPurchase * item.quantity).toFixed(2) %></div>
+                    </div>
+                <% }); %>
+            </div>
+
+            <div class="order-summary">
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span>$<%= order.totalAmount.toFixed(2) %></span>
+                </div>
+                <div class="summary-row">
+                    <span>Shipping</span>
+                    <% if (order.shippingCost === 0) { %>
+                        <span class="free-shipping">Free</span>
+                    <% } else { %>
+                        <span>$<%= order.shippingCost.toFixed(2) %></span>
+                    <% } %>
+                </div>
+                <div class="summary-row">
+                    <span>Total</span>
+                    <span>$<%= order.finalTotal.toFixed(2) %></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="next-steps">
+            <h3>What's Next?</h3>
+            <ul class="steps-list">
+                <li class="step">
+                    <i class="fas fa-envelope"></i>
+                    <span class="step-text">You'll receive an order confirmation email shortly</span>
+                </li>
+                <li class="step">
+                    <i class="fas fa-truck"></i>
+                    <span class="step-text">We'll notify you when your order ships</span>
+                </li>
+                <li class="step">
+                    <i class="fas fa-phone"></i>
+                    <span class="step-text">Our delivery team will contact you for delivery</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <%- include('../components/footer') %>
+</body>
+</html> 

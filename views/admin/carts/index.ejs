@@ -1,11 +1,12 @@
 <%- include('../adminComponents/head') %>
 <%- include('../adminComponents/header') %>
 <%- include('../adminComponents/slideBar') %>
+<%- include('../adminComponents/switchLanguage') %>
 
 <div class="main-content">
     <div class="header">
         <div class="header-content">
-            <h1>Manage Carts</h1>
+            <h1 data-i18n="adminCarts.title">Manage Carts</h1>
         </div>
     </div>
 
@@ -43,34 +44,32 @@
                                             <% } else { %>
                                                 <span class="item-price">EGP <%= item.currentPrice ? item.currentPrice.toFixed(2) : '0.00' %></span>
                                             <% } %>
-                                            <span class="item-quantity">Qty: <%= item.quantity %></span>
+                                            <span class="item-quantity"><span data-i18n="adminCarts.quantity">Qty:</span> <%= item.quantity %></span>
                                         </div>
                                     </div>
                                 <% }); %>
                                 <% if (cart.items.length > 3) { %>
-                                    <div class="more-items">
-                                        +<%= cart.items.length - 3 %> more items
-                                    </div>
+                                    <div class="more-items" data-i18n="adminCarts.moreItems">+<%= cart.items.length - 3 %> more items</div>
                                 <% } %>
                             <% } else { %>
-                                <div class="empty-cart">No items in cart</div>
+                                <div class="empty-cart" data-i18n="adminCarts.emptyCart">No items in cart</div>
                             <% } %>
                         </div>
 
                         <div class="cart-footer">
                             <div class="cart-total">
-                                <span>Total:</span>
+                                <span data-i18n="adminCarts.total">Total:</span>
                                 <span class="amount">EGP <%= cart.totalAmount ? cart.totalAmount.toFixed(2) : '0.00' %></span>
                             </div>
                             <div class="cart-actions">
                                 <a href="/admin/carts/<%= cart._id %>" class="btn-view">
                                     <i class="fas fa-eye"></i>
-                                    View Details
+                                    <span data-i18n="adminCarts.viewDetails">View Details</span>
                                 </a>
                                 <% if (cart._id) { %>
                                 <button class="btn-delete" onclick="showDeleteConfirmation('<%= cart._id %>')">
                                     <i class="fas fa-trash"></i>
-                                    Delete
+                                    <span data-i18n="adminCarts.delete">Delete</span>
                                 </button>
                                 <% } %>
                             </div>
@@ -81,8 +80,8 @@
         <% } else { %>
             <div class="no-carts">
                 <i class="fas fa-shopping-basket"></i>
-                <h2>No Carts Found</h2>
-                <p>There are no active shopping carts at the moment.</p>
+                <h2 data-i18n="adminCarts.noCarts">No Carts Found</h2>
+                <p data-i18n="adminCarts.noCartsMessage">There are no active shopping carts at the moment.</p>
             </div>
         <% } %>
     </div>
@@ -91,14 +90,20 @@
 <div id="deleteConfirmationModal" class="modal">
     <div class="modal-content">
         <span class="close-button">&times;</span>
-        <h2>Confirm Deletion</h2>
-        <p>Are you sure you want to delete this cart? This action cannot be undone.</p>
+        <h2 data-i18n="adminCarts.deleteConfirmTitle">Confirm Deletion</h2>
+        <p data-i18n="adminCarts.deleteConfirmMessage">Are you sure you want to delete this cart? This action cannot be undone.</p>
         <div class="modal-actions">
-            <button id="confirmDeleteBtn" class="btn btn-danger">Yes, Delete</button>
-            <button id="cancelDeleteBtn" class="btn btn-secondary">No, Cancel</button>
+            <button id="confirmDeleteBtn" class="btn btn-danger" data-i18n="adminCarts.confirmDelete">Yes, Delete</button>
+            <button id="cancelDeleteBtn" class="btn btn-secondary" data-i18n="adminCarts.cancelDelete">No, Cancel</button>
         </div>
     </div>
 </div>
+
+<!-- Add i18next and plugins from CDN -->
+<script src="https://unpkg.com/i18next/dist/umd/i18next.min.js"></script>
+<script src="https://unpkg.com/i18next-http-backend/i18nextHttpBackend.min.js"></script>
+<script src="https://unpkg.com/i18next-browser-languagedetector/i18nextBrowserLanguageDetector.min.js"></script>
+<script src="/js/i18n.js"></script>
 
 <style>
 /* General Layout */
@@ -505,7 +510,7 @@
 
     function showDeleteConfirmation(cartId) {
         if (!cartId || cartId === 'null' || cartId === '') {
-            displayMessage('Invalid cart ID. Please refresh the page.', 'error');
+            displayMessage(i18next.t('adminCarts.invalidCartId'), 'error');
             return;
         }
         cartIdToDelete = cartId;
@@ -529,7 +534,7 @@
 
     confirmDeleteBtn.addEventListener('click', async () => {
         if (!cartIdToDelete) {
-            displayMessage('Invalid cart ID. Please refresh the page.', 'error');
+            displayMessage(i18next.t('adminCarts.invalidCartId'), 'error');
             hideDeleteConfirmation();
             return;
         }
@@ -545,7 +550,7 @@
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.error || 'Failed to delete cart');
+                throw new Error(data.error || i18next.t('adminCarts.deleteError'));
             }
 
             if (data.success) {
@@ -559,11 +564,11 @@
                     location.reload();
                 }
 
-                displayMessage('Cart deleted successfully!', 'success');
+                displayMessage(i18next.t('adminCarts.deleteSuccess'), 'success');
             }
         } catch (error) {
             console.error('Error:', error);
-            displayMessage(error.message || 'Failed to delete cart', 'error');
+            displayMessage(error.message || i18next.t('adminCarts.deleteError'), 'error');
         } finally {
             hideDeleteConfirmation();
         }

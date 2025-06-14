@@ -4,31 +4,32 @@
 
          <%- include('adminComponents/header') %>
          <%- include('adminComponents/slideBar') %>
+         <%- include('adminComponents/switchLanguage') %>
 
     <!-- Main Content -->
     <main class="admin-main">
       <!-- Dashboard Overview -->
       <section id="dashboard" class="dashboard-overview">
-        <h2>Dashboard Overview</h2>
+        <h2 data-i18n="adminDashboard.overview.title">Dashboard Overview</h2>
         <div class="overview-cards">
           <div class="card">
             <i class="fas fa-box"></i>
-            <h3>Total Products</h3>
+            <h3 data-i18n="adminDashboard.overview.totalProducts">Total Products</h3>
             <p><%= stats.totalProducts %></p>
           </div>
           <div class="card">
             <i class="fas fa-shopping-cart"></i>
-            <h3>Total Orders</h3>
+            <h3 data-i18n="adminDashboard.overview.totalOrders">Total Orders</h3>
             <p><%= stats.totalOrders %></p>
           </div>
           <div class="card">
             <i class="fas fa-users"></i>
-            <h3>Total Users</h3>
+            <h3 data-i18n="adminDashboard.overview.totalUsers">Total Users</h3>
             <p><%= stats.totalUsers %></p>
           </div>
           <div class="card">
             <i class="fas fa-dollar-sign"></i>
-            <h3>Total Revenue</h3>
+            <h3 data-i18n="adminDashboard.overview.totalRevenue">Total Revenue</h3>
             <p>EGP <%= stats.totalRevenue %></p>
           </div>
         </div>
@@ -36,16 +37,16 @@
 
       <!-- Recent Orders -->
       <section class="dashboard-section">
-        <h2>Recent Orders</h2>
+        <h2 data-i18n="adminDashboard.recentOrders.title">Recent Orders</h2>
         <div class="table-responsive">
           <table class="dashboard-table">
             <thead>
               <tr>
-                <th>Order ID</th>
-                <th>Customer</th>
-                <th>Date</th>
-                <th>Amount</th>
-                <th>Status</th>
+                <th data-i18n="adminDashboard.recentOrders.orderId">Order ID</th>
+                <th data-i18n="adminDashboard.recentOrders.customer">Customer</th>
+                <th data-i18n="adminDashboard.recentOrders.date">Date</th>
+                <th data-i18n="adminDashboard.recentOrders.amount">Amount</th>
+                <th data-i18n="adminDashboard.recentOrders.status">Status</th>
               </tr>
             </thead>
             <tbody>
@@ -65,7 +66,7 @@
                 <% }); %>
               <% } else { %>
                 <tr>
-                  <td colspan="5" class="no-data">No recent orders</td>
+                  <td colspan="5" class="no-data" data-i18n="adminDashboard.recentOrders.noOrders">No recent orders</td>
                 </tr>
               <% } %>
             </tbody>
@@ -75,14 +76,14 @@
 
       <!-- Low Stock Products -->
       <section class="dashboard-section">
-        <h2>Low Stock Products</h2>
+        <h2 data-i18n="adminDashboard.lowStock.title">Low Stock Products</h2>
         <div class="table-responsive">
           <table class="dashboard-table">
             <thead>
               <tr>
-                <th>Product Name</th>
-                <th>Current Stock</th>
-                <th>Price</th>
+                <th data-i18n="adminDashboard.lowStock.productName">Product Name</th>
+                <th data-i18n="adminDashboard.lowStock.currentStock">Current Stock</th>
+                <th data-i18n="adminDashboard.lowStock.price">Price</th>
               </tr>
             </thead>
             <tbody>
@@ -96,12 +97,11 @@
                       </span>
                     </td>
                     <td>EGP <%= product.price.toFixed(2) %></td>
-                    
                   </tr>
                 <% }); %>
               <% } else { %>
                 <tr>
-                  <td colspan="4" class="no-data">No low stock products</td>
+                  <td colspan="4" class="no-data" data-i18n="adminDashboard.lowStock.noProducts">No low stock products</td>
                 </tr>
               <% } %>
             </tbody>
@@ -111,15 +111,15 @@
 
       <!-- Top Selling Products -->
       <section class="dashboard-section">
-        <h2>Top Selling Products</h2>
+        <h2 data-i18n="adminDashboard.topSelling.title">Top Selling Products</h2>
         <div class="table-responsive">
           <table class="dashboard-table">
             <thead>
               <tr>
-                <th>Product Name</th>
-                <th>Total Sold</th>
-                <th>Current Stock</th>
-                <th>Price</th>
+                <th data-i18n="adminDashboard.topSelling.productName">Product Name</th>
+                <th data-i18n="adminDashboard.topSelling.totalSold">Total Sold</th>
+                <th data-i18n="adminDashboard.topSelling.currentStock">Current Stock</th>
+                <th data-i18n="adminDashboard.topSelling.price">Price</th>
               </tr>
             </thead>
             <tbody>
@@ -134,7 +134,7 @@
                 <% }); %>
               <% } else { %>
                 <tr>
-                  <td colspan="4" class="no-data">No sales data available</td>
+                  <td colspan="4" class="no-data" data-i18n="adminDashboard.topSelling.noData">No sales data available</td>
                 </tr>
               <% } %>
             </tbody>
@@ -239,8 +239,10 @@
     }
   </style>
 
-  <!-- JavaScript -->
-
-  
+  <!-- Add i18next and plugins from CDN -->
+  <script src="https://unpkg.com/i18next/dist/umd/i18next.min.js"></script>
+  <script src="https://unpkg.com/i18next-http-backend/i18nextHttpBackend.min.js"></script>
+  <script src="https://unpkg.com/i18next-browser-languagedetector/i18nextBrowserLanguageDetector.min.js"></script>
+  <script src="/js/i18n.js"></script>
 </body>
 </html>

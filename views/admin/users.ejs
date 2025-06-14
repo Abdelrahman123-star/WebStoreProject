@@ -2,19 +2,20 @@
 <%- include('adminComponents/head') %>
 <%- include('adminComponents/header') %>
 <%- include('adminComponents/slidebar') %>
+<%- include('adminComponents/switchLanguage') %>
 
     <main class="admin-main">
 
       <section id="users" class="user-management">
         <div class="products-header">
-          <h2>User Management</h2>
+          <h2 data-i18n="adminUsers.title">User Management</h2>
           <div class="header-actions">
             <div class="search-container">
-              <input type="text" id="userSearch" placeholder="Search users..." class="search-input">
+              <input type="text" id="userSearch" data-i18n-placeholder="adminUsers.searchPlaceholder" placeholder="Search users..." class="search-input">
             </div>
             <button class="add-product">
               <i class="fas fa-plus"></i>
-              Add User
+              <span data-i18n="adminUsers.addUser">Add User</span>
             </button>
           </div>
         </div>
@@ -300,19 +301,19 @@
             <div class="user-card">
               <div class="user-header">
                 <h3 class="user-name"><%= user.username %></h3>
-                <span class="user-role <%= user.role %>"><%= user.role %></span>
+                <span class="user-role <%= user.role %>" data-i18n="adminUsers.role.<%= user.role %>"><%= user.role %></span>
               </div>
               <div class="user-info">
                 <div class="info-group">
-                  <div class="info-label">Email</div>
+                  <div class="info-label" data-i18n="adminUsers.email">Email</div>
                   <div class="info-value"><%= user.email %></div>
                 </div>
                 <div class="info-group">
-                  <div class="info-label">Phone</div>
+                  <div class="info-label" data-i18n="adminUsers.phone">Phone</div>
                   <div class="info-value"><%= user.phone %></div>
                 </div>
                 <div class="info-group">
-                  <div class="info-label">Location</div>
+                  <div class="info-label" data-i18n="adminUsers.location">Location</div>
                   <div class="info-value"><%= user.street %>, <%= user.city %></div>
                 </div>
               </div>
@@ -326,13 +327,13 @@
                   data-city="<%= user.city %>"
                   data-phone="<%= user.phone %>">
                   <i class="fas fa-edit"></i>
-                  Edit
+                  <span data-i18n="adminUsers.edit">Edit</span>
                 </button>
                 <form action="/admin/users/delete" method="POST" style="flex: 1;">
                   <input type="hidden" name="id" value="<%= user._id %>">
                   <button type="submit" class="action-button delete-button">
                     <i class="fas fa-trash"></i>
-                    Delete
+                    <span data-i18n="adminUsers.delete">Delete</span>
                   </button>
                 </form>
               </div>
@@ -380,45 +381,45 @@
 <div id="editUserModal" class="modal-wrapper">
   <div class="modal-box">
     <div class="modal-header">
-      <h2 id="addoreditUser">Edit User</h2>
+      <h2 id="addoreditUser" data-i18n="adminUsers.editUser">Edit User</h2>
       <span class="modal-close" id="closeModal">&times;</span>
     </div>
     <form id="editUserForm" class="modal-body" method="POST">
       <input type="hidden" id="editUserId" name="id">
       <div>
-        <label for="editUsername">Name</label>
+        <label for="editUsername" data-i18n="adminUsers.name">Name</label>
         <input type="text" id="editUsername" name="username" required>
       </div>
       <div>
-        <label for="editEmail">Email</label>
+        <label for="editEmail" data-i18n="adminUsers.email">Email</label>
         <input type="email" id="editEmail" name="email" required>
       </div>
       <div>
-        <label for="editPassword" id="passwordLabel">Password</label>
+        <label for="editPassword" id="passwordLabel" data-i18n="adminUsers.password">Password</label>
         <input type="password" id="editPassword" name="password">
       </div>
       <div>
-        <label for="editRole">Role</label>
+        <label for="editRole" data-i18n="adminUsers.roleLabel">Role</label>
         <select id="editRole" name="role">
-          <option value="admin">Admin</option>
-          <option value="customer">Customer</option>
+          <option value="admin" data-i18n="adminUsers.role.admin">Admin</option>
+          <option value="customer" data-i18n="adminUsers.role.customer">Customer</option>
         </select>
       </div>
       <div class="leabel_flex">
-        <label for="editStreet">Street</label>
-        <label for="editCity">City</label>
+        <label for="editStreet" data-i18n="adminUsers.street">Street</label>
+        <label for="editCity" data-i18n="adminUsers.city">City</label>
       </div>
       <div class="flex_row">
         <input type="text" id="editStreet" name="street" required>
         <input type="text" id="editCity" name="city" required>
       </div>
       <div>
-        <label for="editphone">Phone Number</label>
+        <label for="editphone" data-i18n="adminUsers.phone">Phone Number</label>
         <input type="tel" id="editPhone" name="phone" required>
       </div>
       <button type="submit" class="modal-save">
         <i class="fas fa-save"></i>
-        Save Changes
+        <span data-i18n="adminUsers.saveChanges">Save Changes</span>
       </button>
     </form>
   </div>
@@ -649,19 +650,19 @@
             <div class="user-card">
               <div class="user-header">
                 <h3 class="user-name">${highlightText(user.username, searchTerm)}</h3>
-                <span class="user-role ${user.role}">${user.role}</span>
+                <span class="user-role ${user.role}" data-i18n="adminUsers.roles.${user.role}">${i18next.t(`adminUsers.roles.${user.role}`)}</span>
               </div>
               <div class="user-info">
                 <div class="info-group">
-                  <div class="info-label">Email</div>
+                  <div class="info-label" data-i18n="adminUsers.email">${i18next.t('adminUsers.email')}</div>
                   <div class="info-value">${highlightText(user.email, searchTerm)}</div>
                 </div>
                 <div class="info-group">
-                  <div class="info-label">Phone</div>
+                  <div class="info-label" data-i18n="adminUsers.phone">${i18next.t('adminUsers.phone')}</div>
                   <div class="info-value">${highlightText(user.phone, searchTerm)}</div>
                 </div>
                 <div class="info-group">
-                  <div class="info-label">Location</div>
+                  <div class="info-label" data-i18n="adminUsers.location">${i18next.t('adminUsers.location')}</div>
                   <div class="info-value">${highlightText(user.street, searchTerm)}, ${highlightText(user.city, searchTerm)}</div>
                 </div>
               </div>
@@ -675,13 +676,13 @@
                   data-city="${user.city}"
                   data-phone="${user.phone}">
                   <i class="fas fa-edit"></i>
-                  Edit
+                  <span data-i18n="adminUsers.edit">${i18next.t('adminUsers.edit')}</span>
                 </button>
                 <form action="/admin/users/delete" method="POST" style="flex: 1;">
                   <input type="hidden" name="id" value="${user._id}">
                   <button type="submit" class="action-button delete-button">
                     <i class="fas fa-trash"></i>
-                    Delete
+                    <span data-i18n="adminUsers.deleteButton">${i18next.t('adminUsers.deleteButton')}</span>
                   </button>
                 </form>
               </div>
@@ -694,8 +695,8 @@
           return `
             <div class="no-results">
               <i class="fas fa-search"></i>
-              <h3>No Users Found</h3>
-              <p>No users match your search for "${searchTerm}"</p>
+              <h3 data-i18n="adminUsers.noUsersFound">${i18next.t('adminUsers.noUsersFound')}</h3>
+              <p data-i18n="adminUsers.noUsersFoundMessage">${i18next.t('adminUsers.noUsersFoundMessage', { searchTerm })}</p>
             </div>
           `;
         }
@@ -793,5 +794,11 @@
     </script>
 
     <script src="../js/adminUsers.js"></script>
+
+    <!-- Add i18next and plugins from CDN -->
+    <script src="https://unpkg.com/i18next/dist/umd/i18next.min.js"></script>
+    <script src="https://unpkg.com/i18next-http-backend/i18nextHttpBackend.min.js"></script>
+    <script src="https://unpkg.com/i18next-browser-languagedetector/i18nextBrowserLanguageDetector.min.js"></script>
+    <script src="/js/i18n.js"></script>
   </body>
 </html>

@@ -8,11 +8,18 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= product.name %></title>
+    <title data-i18n="productDetailPage.title"><%= product.name %></title>
     <link rel="stylesheet" href="/css/productsAndCart.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <!-- Add Lightbox CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet">
+
+    <!-- Add i18next and plugins from CDN -->
+    <script src="https://unpkg.com/i18next/dist/umd/i18next.min.js"></script>
+    <script src="https://unpkg.com/i18next-http-backend/i18nextHttpBackend.min.js"></script>
+    <script src="https://unpkg.com/i18next-browser-languagedetector/i18nextBrowserLanguageDetector.min.js"></script>
+    <script src="/js/i18n.js"></script>
+
     <style>
       /* Zoom container styles */
       .medium-zoom-overlay {
@@ -192,7 +199,8 @@
     <!-- Header -->
     <%- include('../components/header') %>
     <%- include('../components/backButton') %>
-    <div id="cart-message">Item has been added to cart!</div>
+    <%- include('../components/switchLanguage') %>
+    <div id="cart-message" data-i18n="productDetailPage.actions.addToCart">Item has been added to cart!</div>
 
     <main class="product-container">
         <div class="product-layout">
@@ -212,7 +220,7 @@
                             <img src="/imgs/img-notfound.jpg" alt="Image Not Found" class="main-image">
                         </a>
                     <% } %>
-                    <div class="zoom-hint">
+                    <div class="zoom-hint" data-i18n="productDetailPage.zoom.hint">
                         <i class="fas fa-search-plus"></i> Click to zoom
                     </div>
                 </div>
@@ -228,7 +236,7 @@
                                 <i class="fas fa-star <%= i <= Math.round(product.rating) ? 'active' : '' %>"></i>
                             <% } %>
                         </div>
-                        <span class="rating-count">(<%= product.numberOfReviews %> reviews)</span>
+                        <span class="rating-count">(<%= product.numberOfReviews %> <span data-i18n="productDetailPage.reviews.reviews">reviews</span>)</span>
                     </div>
                 </div>
 
@@ -244,21 +252,22 @@
                     <% } %>
                 </div>
                 <div class="product-description">
-                  <h3>Description</h3>
+                  <h3 data-i18n="productDetailPage.description">Description</h3>
                   <p><%= product.description %></p>
-              </div>
+                </div>
                 <div class="stock-status <%= product.stock > 10 ? 'in-stock' : (product.stock > 0 ? 'low-stock' : 'out-of-stock') %>">
                     <i class="fas <%= product.stock > 10 ? 'fa-check-circle' : (product.stock > 0 ? 'fa-exclamation-circle' : 'fa-times-circle') %>"></i>
-                    <%= product.stock > 10 ? 'In Stock' : (product.stock > 0 ? 'Low Stock' : 'Out of Stock') %>
+                    <span data-i18n="productDetailPage.stock.<%= product.stock > 10 ? 'inStock' : (product.stock > 0 ? 'lowStock' : 'outOfStock') %>">
+                        <%= product.stock > 10 ? 'In Stock' : (product.stock > 0 ? 'Low Stock' : 'Out of Stock') %>
+                    </span>
                     <% if (product.stock > 0) { %>
-                        <span class="stock-count">(<%= product.stock %> available)</span>
+                        <span class="stock-count">(<%= product.stock %> <span data-i18n="productDetailPage.stock.available">available</span>)</span>
                     <% } %>
                 </div>
 
-
-
                 <div class="product-actions">
                     <div class="quantity-selector">
+                        <span data-i18n="productDetailPage.actions.quantity">Quantity</span>
                         <button class="quantity-btn minus" onclick="updateQuantity(-1)">-</button>
                         <input type="number" id="quantity" value="1" min="1" max="<%= product.stock %>" onchange="validateQuantity(this)">
                         <button class="quantity-btn plus" onclick="updateQuantity(1)">+</button>
@@ -266,20 +275,20 @@
 
                     <div class="action-buttons">
                         <% if (session && session.user) { %>
-                            <button class="btn-add-cart" id="add-to-cart-btn">
+                            <button class="btn-add-cart" id="add-to-cart-btn" data-i18n="productDetailPage.actions.addToCart">
                                 <i class="fas fa-shopping-cart"></i>
                                 Add to Cart
                             </button>
                         <% } else { %>
-                            <button class="btn-login" onclick="window.location.href='/login'">
+                            <button class="btn-login" onclick="window.location.href='/login'" data-i18n="productDetailPage.actions.loginToAdd">
                                 <i class="fas fa-sign-in-alt"></i>
                                 Login to Add to Cart
                             </button>
                         <% } %>
 
-                        <button class="btn-buy-now" 
-                                onclick="window.location.href='/payment'"
-                                <%= product.stock <= 0 ? 'disabled' : '' %>>
+                        <button class="btn-buy-now" onclick="window.location.href='/myCart' "
+                                <%= product.stock <= 0 ? 'disabled' : '' %>
+                                data-i18n="productDetailPage.actions.buyNow">
                             <i class="fas fa-bolt"></i>
                             Buy Now
                         </button>
@@ -289,7 +298,7 @@
         </div>
 
         <section class="comments-section">
-          <h3>Customer Reviews</h3>
+          <h3 data-i18n="productDetailPage.reviews.title">Customer Reviews</h3>
           
           <!-- Rating Summary -->
           <div class="rating-summary">
@@ -300,12 +309,12 @@
                   <i class="fas fa-star <%= i <= Math.round(product.rating) ? 'active' : '' %>"></i>
                 <% } %>
               </div>
-              <div class="rating-count"><%= product.numberOfReviews %> reviews</div>
+              <div class="rating-count"><%= product.numberOfReviews %> <span data-i18n="productDetailPage.reviews.reviews">reviews</span></div>
             </div>
             <div class="rating-distribution">
               <% for(let i = 5; i >= 1; i--) { %>
                 <div class="rating-bar">
-                  <span class="rating-label"><%= i %> stars</span>
+                  <span class="rating-label"><%= i %> <span data-i18n="productDetailPage.reviews.stars">stars</span></span>
                   <div class="progress-bar">
                     <% const width = ((comments.filter(c => c.rating === i).length / (product.numberOfReviews || 1)) * 100).toFixed(0); %>
                     <div class="progress progress-<%= width %>"></div>
@@ -321,7 +330,7 @@
               <% if (session && session.user) { %>
                   <form id="commentForm" class="comment-form">
                       <div class="rating-input">
-                          <label>Your Rating:</label>
+                          <label data-i18n="productDetailPage.reviews.yourRating">Your Rating:</label>
                           <div class="star-rating">
                               <% for(let i = 5; i >= 1; i--) { %>
                                   <input type="radio" id="star<%= i %>" name="rating" value="<%= i %>" required>
@@ -330,17 +339,19 @@
                           </div>
                       </div>
                       <div class="form-group">
-                          <label for="commentContent">Your Review:</label>
+                          <label for="commentContent" data-i18n="productDetailPage.reviews.yourReview">Your Review:</label>
                           <textarea id="commentContent" name="content" rows="4" required 
+                                  data-i18n-placeholder="productDetailPage.reviews.reviewPlaceholder"
                                   placeholder="Share your experience with this product..."></textarea>
                       </div>
-                      <button type="submit" class="submit-comment">
+                      <button type="submit" class="submit-comment" data-i18n="productDetailPage.reviews.submitReview">
                           <i class="fas fa-paper-plane"></i> Submit Review
                       </button>
                   </form>
               <% } else { %>
                   <div class="login-prompt">
-                      <p>Please <a href="/login">login</a> to leave a review</p>
+                      <p><span data-i18n="productDetailPage.reviews.loginToReview">Please login to leave a review</span> 
+                         <a href="/login" data-i18n="productDetailPage.reviews.login">login</a></p>
                   </div>
               <% } %>
           </div>
@@ -366,21 +377,20 @@
                           </div>
                           <div class="comment-footer">
                               <span class="comment-date"><%= new Date(comment.createdAt).toLocaleDateString() %></span>
-                              <span class="comment-status <%= comment.status %>">
+                              <span class="comment-status <%= comment.status %>" data-i18n="productDetailPage.reviews.status.<%= comment.status %>">
                                   <%= comment.status.charAt(0).toUpperCase() + comment.status.slice(1) %>
                               </span>
                           </div>
                       </div>
                   <% }); %>
               <% } else { %>
-                  <p class="no-comments">No reviews yet. Be the first to review this product!</p>
+                  <p class="no-comments" data-i18n="productDetailPage.reviews.noReviews">No reviews yet. Be the first to review this product!</p>
               <% } %>
           </div>
       </section>
 
-
         <section class="related-products-section">
-            <h3>More Products You Might Like</h3>
+            <h3 data-i18n="productDetailPage.relatedProducts.title">More Products You Might Like</h3>
             <div class="related-products-grid">
               <% if (relatedProducts && relatedProducts.length > 0) { %>
                 <% relatedProducts.forEach(function(relatedProduct) { %>
@@ -399,14 +409,13 @@
                   </div>
                 <% }) %>
               <% } else { %>
-                <p class="no-related-products">No related products found.</p>
+                <p class="no-related-products" data-i18n="productDetailPage.relatedProducts.noProducts">No related products found.</p>
               <% } %>
             </div>
         </section>
-
-        
     </main>
-          <%- include('../components/footer') %>
+
+    <%- include('../components/footer') %>
 
     <script src="/js/product_cart.js"></script>
     <!-- Add Lightbox JS -->

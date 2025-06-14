@@ -2,6 +2,7 @@
 <%- include('adminComponents/head') %>
 <%- include('adminComponents/header') %>
 <%- include('adminComponents/slidebar') %>
+<%- include('adminComponents/switchLanguage') %>
 
 <section id="products" class="products-management">
   <main class="admin-main">
@@ -27,10 +28,10 @@
     </script>
     
     <div class="products-header">
-      <h2>Products Management</h2>
+      <h2 data-i18n="adminProducts.title">Products Management</h2>
       <button class="add-product">
         <i class="fas fa-plus"></i>
-        Add Product
+        <span data-i18n="adminProducts.addProduct">Add Product</span>
       </button>
     </div>
 
@@ -270,7 +271,7 @@
             <% } else { %>
               <img src="/imgs/img-notfound.jpg" alt="No Image">
             <% } %>
-            <span class="product-badge">
+            <span class="product-badge" data-i18n="<%= product.stock > 0 ? 'adminProducts.inStock' : 'adminProducts.outOfStock' %>">
               <%= product.stock > 0 ? 'In Stock' : 'Out of Stock' %>
             </span>
           </div>
@@ -280,27 +281,27 @@
               <% if (product.category && product.category.name) { %>
                 <%= product.category.name %>
               <% } else { %>
-                <span style="color: #999;">Uncategorized</span>
+                <span style="color: #999;" data-i18n="adminProducts.uncategorized">Uncategorized</span>
               <% } %>
             </div>
             <div class="product-details">
               <div class="detail-item">
-                <div class="detail-label">Price</div>
+                <div class="detail-label" data-i18n="adminProducts.price">Price</div>
                 <div class="detail-value"><%= product.price %> LE</div>
               </div>
               <div class="detail-item">
-                <div class="detail-label">Stock</div>
+                <div class="detail-label" data-i18n="adminProducts.stock">Stock</div>
                 <div class="detail-value"><%= product.stock %></div>
               </div>
             </div>
             <div class="product-actions">
               <button class="action-button edit-button edit" data-id="<%= product._id %>">
                 <i class="fas fa-edit"></i>
-                Edit
+                <span data-i18n="adminProducts.edit">Edit</span>
               </button>
               <button class="action-button delete-button delete" data-id="<%= product._id %>" data-name="<%= product.name %>">
                 <i class="fas fa-trash"></i>
-                Delete
+                <span data-i18n="adminProducts.delete">Delete</span>
               </button>
             </div>
           </div>
@@ -345,7 +346,7 @@
 <div id="productModal" class="modal">
   <div class="modal-content">
     <span class="close-modal">&times;</span>
-    <h2 id="modalTitle">Add New Product</h2>
+    <h2 id="modalTitle" data-i18n="adminProducts.addNewProduct">Add New Product</h2>
     
     <form id="productForm" method="POST" action="/admin/products/create" enctype="multipart/form-data">
       <div class="form-grid">
@@ -353,16 +354,16 @@
         <div class="form-column">
           <!-- Product Image Upload -->
           <div class="form-group image-upload">
-            <label for="productImage">Product Image</label>
+            <label for="productImage" data-i18n="adminProducts.productImage">Product Image</label>
             <div class="image-preview" id="imagePreview">
               <img src="" alt="Image Preview" class="image-preview__image">
-              <span class="image-preview__default-text">Image will appear here</span>
+              <span class="image-preview__default-text" data-i18n="adminProducts.imagePreview">Image will appear here</span>
             </div>
             <div class="upload-options">
               <input type="file" id="productImage" name="productImage" accept="image/*" style="display: none;">
-              <button type="button" class="upload-btn" id="uploadBtn">Upload Image</button>
-              <span class="or-text">OR</span>
-              <input type="text" id="imageUrl" name="imageUrl" placeholder="Paste image URL">
+              <button type="button" class="upload-btn" id="uploadBtn" data-i18n="adminProducts.uploadImage">Upload Image</button>
+              <span class="or-text" data-i18n="adminProducts.or">OR</span>
+              <input type="text" id="imageUrl" name="imageUrl" data-i18n-placeholder="adminProducts.pasteImageUrl" placeholder="Paste image URL">
             </div>
           </div>
         </div>
@@ -371,24 +372,24 @@
         <div class="form-column">
           <!-- Product Details -->
           <div class="form-group">
-            <label for="productName">Product Name*</label>
+            <label for="productName" data-i18n="adminProducts.productName">Product Name*</label>
             <input type="text" id="productName" name="productName" required>
           </div>
           
           <div class="form-group">
-            <label for="productPrice">Price (LE)*</label>
+            <label for="productPrice" data-i18n="adminProducts.price">Price (LE)*</label>
             <input type="number" id="productPrice" name="productPrice" min="0" step="0.01" required>
           </div>
           
           <div class="form-group">
-            <label for="productStock">Stock Quantity*</label>
+            <label for="productStock" data-i18n="adminProducts.stockQuantity">Stock Quantity*</label>
             <input type="number" id="productStock" name="productStock" min="0" required>
           </div>
-          <!-- category -->
+          
           <div class="form-group">
-            <label for="productCategory">Category*</label>
+            <label for="productCategory" data-i18n="adminProducts.category">Category*</label>
             <select id="productCategory" name="productCategory" required>
-              <option value="">Select a category</option>
+              <option value="" data-i18n="adminProducts.selectCategory">Select a category</option>
               <% if (categories && categories.length > 0) { %>
                 <% categories.forEach(category => { %>
                   <option value="<%= category._id %>" data-name="<%= category.name %>"><%= category.name %></option>
@@ -401,13 +402,13 @@
       
       <!-- Full Width Fields -->
       <div class="form-group full-width">
-        <label for="productDescription">Description*</label>
+        <label for="productDescription" data-i18n="adminProducts.description">Description*</label>
         <textarea id="productDescription" name="productDescription" rows="4" required></textarea>
       </div>
       
       <div class="form-actions">
-        <button type="button" class="cancel-btn">Cancel</button>
-        <button type="submit" id="submitBtn" class="submit-btn">Add Product</button>
+        <button type="button" class="cancel-btn" data-i18n="adminProducts.cancel">Cancel</button>
+        <button type="submit" id="submitBtn" class="submit-btn" data-i18n="adminProducts.addProduct">Add Product</button>
       </div>
     </form>
   </div>
@@ -419,17 +420,22 @@
     <div class="delete-icon">
       <i class="fas fa-exclamation-triangle"></i>
     </div>
-    <h2>Delete Product</h2>
-    <p>Are you sure you want to delete "<span id="deleteProductName"></span>"?</p>
-    <p class="delete-warning">This action cannot be undone.</p>
+    <h2 data-i18n="adminProducts.deleteProduct">Delete Product</h2>
+    <p data-i18n="adminProducts.deleteConfirm">Are you sure you want to delete "<span id="deleteProductName"></span>"?</p>
+    <p class="delete-warning" data-i18n="adminProducts.deleteWarning">This action cannot be undone.</p>
     <div class="delete-actions">
-      <button id="cancelDelete" class="cancel-btn">Cancel</button>
-      <button id="confirmDelete" class="delete-btn">Delete</button>
+      <button id="cancelDelete" class="cancel-btn" data-i18n="adminProducts.cancel">Cancel</button>
+      <button id="confirmDelete" class="delete-btn" data-i18n="adminProducts.delete">Delete</button>
     </div>
   </div>
 </div>
 
-<script src="/js/adminProducts.js"></script>
+<!-- Add i18next and plugins from CDN -->
+<script src="https://unpkg.com/i18next/dist/umd/i18next.min.js"></script>
+<script src="https://unpkg.com/i18next-http-backend/i18nextHttpBackend.min.js"></script>
+<script src="https://unpkg.com/i18next-browser-languagedetector/i18nextBrowserLanguageDetector.min.js"></script>
+<script src="/js/i18n.js"></script>
 
+<script src="/js/adminProducts.js"></script>
 <link rel="stylesheet" href="/css/home.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">

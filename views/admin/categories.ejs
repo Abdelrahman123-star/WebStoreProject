@@ -2,13 +2,15 @@
 <%- include('adminComponents/head') %>
 <%- include('adminComponents/header') %>
 <%- include('adminComponents/slidebar') %>
+<%- include('adminComponents/switchLanguage') %>
+
 <section id="products" class="products-management">
   <main class="admin-main">
     <div class="products-header">
-      <h2>Category Management</h2>
+      <h2 data-i18n="adminCategories.title">Category Management</h2>
       <button class="add-product">
         <i class="fas fa-plus"></i>
-        Add Category
+        <span data-i18n="adminCategories.addCategory">Add Category</span>
       </button>
     </div>
 
@@ -304,22 +306,22 @@
               <p class="category-description"><%= category.description %></p>
               <div class="category-meta">
                 <div class="meta-item">
-                  <div class="meta-label">Created</div>
+                  <div class="meta-label" data-i18n="adminCategories.created">Created</div>
                   <div class="meta-value"><%= new Date(category.createdAt).toLocaleDateString() %></div>
                 </div>
                 <div class="meta-item">
-                  <div class="meta-label">Products</div>
+                  <div class="meta-label" data-i18n="adminCategories.products">Products</div>
                   <div class="meta-value"><%= category.productCount || 0 %></div>
                 </div>
               </div>
               <div class="category-actions">
                 <button class="action-button edit-button edit-btn" data-id="<%= category._id %>" data-name="<%= category.name %>">
                   <i class="fas fa-edit"></i>
-                  Edit
+                  <span data-i18n="adminCategories.edit">Edit</span>
                 </button>
                 <button class="action-button delete-button delete" data-id="<%= category._id %>" data-name="<%= category.name %>">
                   <i class="fas fa-trash"></i>
-                  Delete
+                  <span data-i18n="adminCategories.delete">Delete</span>
                 </button>
               </div>
             </div>
@@ -328,8 +330,8 @@
       <% } else { %>
         <div class="no-categories">
           <i class="fas fa-folder-open"></i>
-          <h3>No Categories Found</h3>
-          <p>Click "Add Category" to get started.</p>
+          <h3 data-i18n="adminCategories.noCategories">No Categories Found</h3>
+          <p data-i18n="adminCategories.addCategoryPrompt">Click "Add Category" to get started.</p>
         </div>
       <% } %>
     </div>
@@ -370,46 +372,46 @@
 <div id="productModal" class="modal">
   <div class="modal-content">
     <span class="close-modal">&times;</span>
-    <h2 id="modalTitle">Add New Category</h2>
+    <h2 id="modalTitle" data-i18n="adminCategories.addNewCategory">Add New Category</h2>
     
     <form id="productForm" method="POST" action="/admin/categories/create" enctype="multipart/form-data">
       <div class="form-grid">
         <!-- Left Column -->
         <div class="form-column">
-          <!-- Product Image Upload -->
+          <!-- Category Image Upload -->
           <div class="form-group image-upload">
-            <label for="productImage">Category Image</label>
+            <label for="productImage" data-i18n="adminCategories.categoryImage">Category Image</label>
             <div class="image-preview" id="imagePreview">
               <img src="" alt="Image Preview" class="image-preview__image">
-              <span class="image-preview__default-text">Image will appear here</span>
+              <span class="image-preview__default-text" data-i18n="adminCategories.imagePreview">Image will appear here</span>
             </div>
             <div class="upload-options">
               <input type="file" id="productImage" name="categoryImage" accept="image/*" style="display: none;">
-              <button type="button" class="upload-btn" id="uploadBtn">Upload Image</button>
-              <span class="or-text">OR</span>
-              <input type="text" id="imageUrl" name="imageUrl" placeholder="Paste image URL">
+              <button type="button" class="upload-btn" id="uploadBtn" data-i18n="adminCategories.uploadImage">Upload Image</button>
+              <span class="or-text" data-i18n="adminCategories.or">OR</span>
+              <input type="text" id="imageUrl" name="imageUrl" data-i18n-placeholder="adminCategories.pasteImageUrl" placeholder="Paste image URL">
             </div>
           </div>
         </div>
         
         <!-- Right Column -->
         <div class="form-column">
-          <!-- Product Details -->
+          <!-- Category Details -->
           <div class="form-group">
-            <label for="productName">Category Name*</label>
+            <label for="productName" data-i18n="adminCategories.categoryName">Category Name*</label>
             <input type="text" id="productName" name="categoryName" required>
           </div>
           
           <div class="form-group full-width">
-            <label for="productDescription">Description*</label>
+            <label for="productDescription" data-i18n="adminCategories.description">Description*</label>
             <textarea id="productDescription" name="categoryDescription" rows="4" required></textarea>
           </div>
         </div>
       </div>
       
       <div class="form-actions">
-        <button type="button" class="cancel-btn">Cancel</button>
-        <button type="submit" id="submitBtn" class="submit-btn">Add Category</button>
+        <button type="button" class="cancel-btn" data-i18n="adminCategories.cancel">Cancel</button>
+        <button type="submit" id="submitBtn" class="submit-btn" data-i18n="adminCategories.addCategory">Add Category</button>
       </div>
     </form>
   </div>
@@ -421,15 +423,21 @@
     <div class="delete-icon">
       <i class="fas fa-exclamation-triangle"></i>
     </div>
-    <h2>Delete Category</h2>
-    <p>Are you sure you want to delete "<span id="deleteCategoryName"></span>"?</p>
-    <p class="delete-warning">This action cannot be undone.</p>
+    <h2 data-i18n="adminCategories.deleteCategory">Delete Category</h2>
+    <p data-i18n="adminCategories.deleteConfirm">Are you sure you want to delete "<span id="deleteCategoryName"></span>"?</p>
+    <p class="delete-warning" data-i18n="adminCategories.deleteWarning">This action cannot be undone.</p>
     <div class="delete-actions">
-      <button id="cancelDelete" class="cancel-btn">Cancel</button>
-      <button id="confirmDelete" class="delete-btn">Delete</button>
+      <button id="cancelDelete" class="cancel-btn" data-i18n="adminCategories.cancel">Cancel</button>
+      <button id="confirmDelete" class="delete-btn" data-i18n="adminCategories.delete">Delete</button>
     </div>
   </div>
 </div>
+
+<!-- Add i18next and plugins from CDN -->
+<script src="https://unpkg.com/i18next/dist/umd/i18next.min.js"></script>
+<script src="https://unpkg.com/i18next-http-backend/i18nextHttpBackend.min.js"></script>
+<script src="https://unpkg.com/i18next-browser-languagedetector/i18nextBrowserLanguageDetector.min.js"></script>
+<script src="/js/i18n.js"></script>
 
 <script src="/js/adminCategories.js"></script>
 

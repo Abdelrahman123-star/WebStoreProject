@@ -3,26 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="../css/login.css">
+    <title data-i18n="login">Login</title>
+    <link rel="stylesheet" href="/css/login.css">
+    <!-- Add i18next and plugins from CDN -->
+    <script src="https://unpkg.com/i18next/dist/umd/i18next.min.js"></script>
+    <script src="https://unpkg.com/i18next-http-backend/i18nextHttpBackend.min.js"></script>
+    <script src="https://unpkg.com/i18next-browser-languagedetector/i18nextBrowserLanguageDetector.min.js"></script>
 </head>
 <body>
-
     <div class="container">
+        <%- include('../components/backButton') %>
         <div class="form-box">
-            <h2 id="title">Login</h2>
+            <h2 id="title" data-i18n="login">Login</h2>
 
             <!-- Login Form -->
             <form id="login-form" action="/login" method="POST">
                 <div class="input-group">
-                    <input type="text" name="UsernameOrEmail" placeholder="Email or Username" required>
+                    <input type="text" name="UsernameOrEmail" data-i18n-placeholder="loginPage.emailPlaceholder" placeholder="Email or Username" required>
                 </div>
                 <div class="input-group">
-                    <input type="password" name="password" placeholder="Password" required>
+                    <input type="password" name="password" data-i18n-placeholder="loginPage.passwordPlaceholder" placeholder="Password" required>
                 </div>
-                <p class="forgot"><a href="#">Forgot Password?</a></p>
-                <button type="submit" class="btn">Login</button>
-                <p class="toggle">Don't have an account? <a href="/signup" id="signup-link">Sign Up</a></p>
+                <p class="forgot"><a href="/forgot-password" data-i18n="loginPage.forgotPassword">Forgot Password?</a></p>
+                <button type="submit" class="btn" data-i18n="login">Login</button>
+                <p class="toggle"><span data-i18n="loginPage.noAccount">Don't have an account?</span> <a href="/signup" id="signup-link" data-i18n="loginPage.signUp">Sign Up</a></p>
                 <br>
                 <% if (typeof error !== 'undefined') { %>
                 <div class="error-message" id="errorMessage">
@@ -34,7 +38,9 @@
         </div>
     </div>
 
-    <script src="../js/login.js"></script>
-
+    <!-- Include i18n scripts -->
+    <script src="/js/i18n.js"></script>
+    <script src="/js/languageSwitcher.js"></script>
+    <script src="/js/login.js"></script>
 </body>
 </html>

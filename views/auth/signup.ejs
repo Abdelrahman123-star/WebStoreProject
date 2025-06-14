@@ -3,31 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign-Up</title>
-    <link rel="stylesheet" href="../css/login.css">
+    <title data-i18n="signupPage.title">Sign-Up</title>
+    <link rel="stylesheet" href="/css/login.css">
+    <!-- Add i18next and plugins from CDN -->
+    <script src="https://unpkg.com/i18next/dist/umd/i18next.min.js"></script>
+    <script src="https://unpkg.com/i18next-http-backend/i18nextHttpBackend.min.js"></script>
+    <script src="https://unpkg.com/i18next-browser-languagedetector/i18nextBrowserLanguageDetector.min.js"></script>
 </head>
 <body>
     <div class="container">
-
         <div class="form-box">
-            <h2 id="title">Sign Up</h2>
-            <!-- Sign-Up Form -->
-            <form action="/signup" method="POST" id="signup-form" >
+            <h2 id="title" data-i18n="signupPage.title">Sign Up</h2>
+            <form action="/signup" method="POST" id="signup-form">
+                <!-- Basic Information -->
                 <div class="input-group">
-                    <input type="text" name="username" id="username" placeholder="Full Name" required>
+                    <input type="text" name="username" id="username" 
+                           data-i18n-placeholder="signupPage.fullNamePlaceholder"
+                           placeholder="Full Name" required 
+                           value="<%= typeof formData !== 'undefined' ? formData.username : '' %>">
                 </div>
                 <div class="input-group">
-                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="email" name="email" id="email" 
+                           data-i18n-placeholder="signupPage.emailPlaceholder"
+                           placeholder="Email" required
+                           value="<%= typeof formData !== 'undefined' ? formData.email : '' %>">
                 </div>
                 <div class="input-group">
-                    <input type="password" name="password" placeholder="Password" required>
+                    <input type="password" name="password" id="password" 
+                           data-i18n-placeholder="signupPage.passwordPlaceholder"
+                           placeholder="Password" required minlength="8" 
+                           value="<%= typeof formData !== 'undefined' ? formData.password : '' %>">
                 </div>
                 <div class="input-group">
-                    <input type="password" placeholder="Confirm Password" required>
+                    <input type="password" name="confirmPassword" id="confirmPassword" 
+                           data-i18n-placeholder="signupPage.confirmPasswordPlaceholder"
+                           placeholder="Confirm Password" required 
+                           value="<%= typeof formData !== 'undefined' ? formData.confirmPassword : '' %>">
                 </div>
-                <button type="submit" class="btn">Sign Up</button>
-                <p class="toggle">Already have an account? <a href="/login" id="login-link">Login</a></p>
-                <br>
+                <div class="validation-error" id="passwordError" data-i18n="signupPage.passwordError">Passwords do not match!</div>
+
+                <!-- Phone Number Field -->
+                <div class="input-group">
+                    <div class="phone-input-container">
+                        <span class="phone-prefix">+20</span>
+                        <input type="tel" name="phone" id="phone" 
+                               data-i18n-placeholder="signupPage.phonePlaceholder"
+                               placeholder="e.g., 1012345678" 
+                               pattern="(10|11|12|15)\d{8}" 
+                               title="Egyptian phone number (10, 11, 12, or 15 followed by 8 digits)"
+                               class="phone-input" required
+                               value="<%= typeof formData !== 'undefined' ? formData.phone.replace('+20', '') : '' %>">
+                    </div>
+                    <div class="validation-error" id="phoneError" data-i18n="signupPage.phoneError">
+                        Please enter a valid Egyptian phone number (10, 11, 12, or 15 followed by 8 digits)
+                    </div>
+                </div>
+
+                <!-- Address Section -->
+                <div class="address-section">
+                    <div class="address-row">
+                        <div class="input-group">
+                            <input class="flex_street" type="text" name="street" id="street" 
+                                   data-i18n-placeholder="signupPage.streetPlaceholder"
+                                   placeholder="Street Address" required
+                                   value="<%= typeof formData !== 'undefined' ? formData.street : '' %>">
+                        </div>
+                        <div class="input-group">
+                            <input type="text" name="city" id="city" 
+                                   data-i18n-placeholder="signupPage.cityPlaceholder"
+                                   placeholder="City" required
+                                   value="<%= typeof formData !== 'undefined' ? formData.city : '' %>">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn" id="submitBtn" data-i18n="signupPage.submit">Sign Up</button>
+                <p class="toggle">
+                    <span data-i18n="signupPage.haveAccount">Already have an account?</span> 
+                    <a href="/login" id="login-link" data-i18n="signupPage.login">Login</a>
+                </p>
 
                 <% if (typeof error !== 'undefined') { %>
                 <div class="error-message" id="errorMessage">
@@ -35,12 +89,14 @@
                     <button class="close-btn" onclick="document.getElementById('errorMessage').remove()">×</button>
                 </div>
                 <% } %>
-
             </form>
+            <%- include('../components/backButton') %>
         </div>
     </div>
 
-    <script src="../js/login.js"></script>
-
+    <!-- Include i18n scripts -->
+    <script src="/js/i18n.js"></script>
+    <script src="/js/languageSwitcher.js"></script>
+    <script src="/js/login.js"></script>
 </body>
 </html>

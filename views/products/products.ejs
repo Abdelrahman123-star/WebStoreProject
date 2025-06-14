@@ -9,8 +9,15 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= category ? category.name + ' - ' : '' %>Products - MyStore</title>
+    <title data-i18n="productsPage.title"><%= category ? category.name + ' - ' : '' %>Products - MyStore</title>
     <link rel="stylesheet" href="../css/productsAndCart.css">
+
+    <!-- Add i18next and plugins from CDN -->
+    <script src="https://unpkg.com/i18next/dist/umd/i18next.min.js"></script>
+    <script src="https://unpkg.com/i18next-http-backend/i18nextHttpBackend.min.js"></script>
+    <script src="https://unpkg.com/i18next-browser-languagedetector/i18nextBrowserLanguageDetector.min.js"></script>
+    <script src="/js/i18n.js"></script>
+
     <style>
         :root {
             --primary-color: #2d3436;
@@ -503,6 +510,7 @@
     <!-- Header -->
     <%- include('../components/header') %>
     <%- include('../components/backButton') %>
+    <%- include('../components/switchLanguage') %>
 
     <main class="products-container">
 
@@ -518,21 +526,21 @@
 
         <div class="filters-bar">
             <div class="filter-group">
-                <button class="filter-button <%= currentFilter === 'all' ? 'active' : '' %>" data-filter="all">All</button>
-                <button class="filter-button <%= currentFilter === 'on-sale' ? 'active' : '' %>" data-filter="on-sale">On Sale</button>
+                <button class="filter-button <%= currentFilter === 'all' ? 'active' : '' %>" data-filter="all" data-i18n="productsPage.filters.all">All</button>
+                <button class="filter-button <%= currentFilter === 'on-sale' ? 'active' : '' %>" data-filter="on-sale" data-i18n="productsPage.filters.onSale">On Sale</button>
             </div>
             <div class="filter-group">
                 <select id="sortSelect" onchange="updateSort(this.value)">
-                    <option value="newest" <%= currentSort === 'newest' ? 'selected' : '' %>>Newest</option>
-                    <option value="price-low" <%= currentSort === 'price-low' ? 'selected' : '' %>>Price: Low to High</option>
-                    <option value="price-high" <%= currentSort === 'price-high' ? 'selected' : '' %>>Price: High to Low</option>
-                    <option value="rating" <%= currentSort === 'rating' ? 'selected' : '' %>>Highest Rated</option>
+                    <option value="newest" <%= currentSort === 'newest' ? 'selected' : '' %> data-i18n="productsPage.filters.sort.newest">Newest</option>
+                    <option value="price-low" <%= currentSort === 'price-low' ? 'selected' : '' %> data-i18n="productsPage.filters.sort.priceLow">Price: Low to High</option>
+                    <option value="price-high" <%= currentSort === 'price-high' ? 'selected' : '' %> data-i18n="productsPage.filters.sort.priceHigh">Price: High to Low</option>
+                    <option value="rating" <%= currentSort === 'rating' ? 'selected' : '' %> data-i18n="productsPage.filters.sort.rating">Highest Rated</option>
                 </select>
             </div>
             <div class="filter-group">
                 <div class="rating-filter-container">
                     <div class="rating-label">
-                        <span>Rating</span>
+                        <span data-i18n="productsPage.filters.rating.title">Rating</span>
                         <% if (currentRating) { %>
                             <button class="clear-rating" onclick="clearRating()">
                                 <i class="fas fa-times"></i>
@@ -550,7 +558,7 @@
                                 </button>
                             <% } %>
                         </div>
-                        <span class="rating-text"><%= currentRating ? currentRating + ' stars & up' : 'Select rating' %></span>
+                        <span class="rating-text" data-i18n="productsPage.filters.rating.select"><%= currentRating ? currentRating + ' stars & up' : 'Select rating' %></span>
                     </div>
                 </div>
             </div>
@@ -574,9 +582,9 @@
                                 <% } %>
                             </div>
                             <div class="product-actions">
-                                <button class="action-button"><i class="fas fa-heart"></i></button>
-                                <button class="action-button"><i class="fas fa-eye"></i></button>
-                                <button class="action-button"><i class="fas fa-shopping-cart"></i></button>
+                                <button class="action-button" data-i18n-title="productsPage.productCard.quickView"><i class="fas fa-heart"></i></button>
+                                <button class="action-button" data-i18n-title="productsPage.productCard.quickView"><i class="fas fa-eye"></i></button>
+                                <button class="action-button" data-i18n-title="productsPage.productCard.addToCart"><i class="fas fa-shopping-cart"></i></button>
                             </div>
                         </div>
                         <div class="product-info">
@@ -590,11 +598,11 @@
                                 <% } %>
                             </div>
                             <% if (product.stock > 0) { %>
-                                <span class="stock-badge <%= product.stock > 10 ? 'in-stock' : 'low-stock' %>">
+                                <span class="stock-badge <%= product.stock > 10 ? 'in-stock' : 'low-stock' %>" data-i18n="productsPage.productCard.<%= product.stock > 10 ? 'inStock' : 'lowStock' %>">
                                     <%= product.stock > 10 ? 'In Stock' : 'Low Stock' %>
                                 </span>
                             <% } else { %>
-                                <span class="stock-badge out-of-stock">Out of Stock</span>
+                                <span class="stock-badge out-of-stock" data-i18n="productsPage.productCard.outOfStock">Out of Stock</span>
                             <% } %>
                             <div class="product-meta">
                                 <div class="rating">
@@ -604,10 +612,10 @@
                                         <% } %>
                                         <span>(<%= product.rating.toFixed(1) %>)</span>
                                     <% } else { %>
-                                        <span class="no-reviews">No reviews yet</span>
+                                        <span class="no-reviews" data-i18n="productsPage.productCard.noReviews">No reviews yet</span>
                                     <% } %>
                                 </div>
-                                <span>Sold: <%= product.soldCount || 0 %></span>
+                                <span data-i18n="productsPage.productCard.sold">Sold: <%= product.soldCount || 0 %></span>
                             </div>
                         </div>
                     </div>
@@ -615,8 +623,8 @@
             <% } else { %>
                 <div class="no-products">
                     <i class="fas fa-box-open"></i>
-                    <h3>No Products Found</h3>
-                    <p>There are no products available in this category at the moment.</p>
+                    <h3 data-i18n="productsPage.noProducts.title">No Products Found</h3>
+                    <p data-i18n="productsPage.noProducts.description">There are no products available in this category at the moment.</p>
                 </div>
             <% } %>
         </section>
