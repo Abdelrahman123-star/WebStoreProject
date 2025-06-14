@@ -60,27 +60,51 @@ exports.showSignup = (req, res) => {
 
 exports.handleSignup = async (req, res) => {
   try {
-    const existingUser = await User.findByUsernameOrEmail(req.body.username);
-    const existingEmail = await User.findByUsernameOrEmail(req.body.email);
+    const { username, email, password, confirmPassword, street, city, phone } = req.body;
+    const fullPhone = '+20' + phone; // Combine with country code
 
+    // Check if username exists
+    const existingUser = await User.findByUsernameOrEmail(username);
     if (existingUser) {
       return res.render('auth/signup', { 
         error: 'Username already exists. Please choose a different username!',
-        username: req.body.username
+        formData: { username, email,password, confirmPassword, street, city, phone: fullPhone }
       });
     }
 
+    // Check if email exists
+    const existingEmail = await User.findByUsernameOrEmail(email);
     if (existingEmail) {
       return res.render('auth/signup', { 
         error: 'Email already exists. Please choose a different Email!',
-        username: req.body.email
+        formData: { username, email,password, confirmPassword, street, city, phone: fullPhone }
       });
     }
 
-    await User.createUser(req.body);
+    // Check password match
+    if (password !== confirmPassword) {
+      return res.render('auth/signup', {
+        error: 'Passwords do not match!',
+        formData: { username, email, street, city, phone: fullPhone }
+      });
+    }
+
+    // Create new user with all fields
+    await User.createUser({
+      username,
+      email,
+      password,
+      phone: fullPhone,
+      street,
+      city
+    });
+
     res.redirect('/login');
   } catch (error) {
     console.error("Signup error:", error);
-    res.status(500).send("Signup failed");
+    res.render('auth/signup', {
+      error: 'Signup failed. Please try again.',
+      formData: req.body
+    });
   }
 };
